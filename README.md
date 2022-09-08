@@ -1,2 +1,2 @@
-# data-structures-and-algorithm problems
+# Data-Structures-and-Algorithm problems
 Practice for DS&A's
