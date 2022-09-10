@@ -1,3 +1,3 @@
-# Data-Structures-and-Algorithm problems
+# Data-Structures-and-Algorithms
 
-Practice for DS&A's
+DS&A problems from HackerRank, Leetcode, and company assessments.
