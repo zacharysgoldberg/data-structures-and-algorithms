@@ -102,15 +102,108 @@ def lonely_integer(a):
 
 def diagonal_difference(arr):
     n = 3
-    d1 = 0
-    d2 = 0
-    for i in range(n):
-        d1 += arr[i][i]
+    d1 = sum(arr[i][i] for i in range(n))
+    d2 = sum(arr[i][n - 1 - i] for i in range(n))
+    # for i in range(n):
+    #     d1 += arr[i][i]
 
-    for i in range(n):
-        d2 += arr[i][n - 1 - i]
+    # for i in range(n):
+    #     d2 += arr[i][n - 1 - i]
 
     return abs(d1 - d2)
 
 
-print(diagonal_difference([[11, 2, 4], [4, 5, 6], [10, 8, -12]]))
+# print(diagonal_difference([[11, 2, 4], [4, 5, 6], [10, 8, -12]]))
+
+
+def counting_sort(arr):
+    counter = [0] * 100
+    for num in arr:
+        if counter[num] == 0:
+            counter[num] += arr.count(num)
+
+    print(counter)
+
+
+# counting_sort([63, 25, 73, 1, 98, 73, 56, 84, 86, 57, 16, 83, 8, 25, 81, 56, 9, 53, 98, 67, 99, 12, 83, 89, 80, 91, 39, 86, 76, 85, 74, 39, 25, 90, 59, 10, 94, 32, 44, 3, 89, 30, 27, 79, 46, 96, 27, 32,
+#               18, 21, 92, 69, 81, 40, 40, 34, 68, 78, 24, 87, 42, 69, 23, 41, 78, 22, 6, 90, 99, 89, 50, 30, 20, 1, 43, 3, 70, 95, 33, 46, 44, 9, 69, 48, 33, 60, 65, 16, 82, 67, 61, 32, 21, 79, 75, 75, 13, 87, 70, 33])
+
+
+def flipping_matrix(matrix):
+    n = len(matrix)
+    maximal = 0
+    for i in range(n // 2):
+        for j in range(n // 2):
+            maximal += max(matrix[i][j],
+                           matrix[i][n - j - 1],
+                           matrix[n - i - 1][j],
+                           matrix[n - i - 1][n - j - 1])
+    print(maximal)
+
+
+# flipping_matrix([[112, 42, 83, 119],
+#                  [56, 125, 56, 49],
+#                 [15, 78, 101, 43],
+#                 [62, 98, 114, 108]])
+
+
+def find_zig_zag_sequence(a, n):
+    a.sort()
+    mid = int((n + 1) / 2 - 1)
+    a[mid], a[n - 1] = a[n - 1], a[mid]
+
+    st = mid + 1
+    ed = n - 2
+    while st <= ed:
+        a[st], a[ed] = a[ed], a[st]
+        st = st + 1
+        ed = ed - 1
+
+    for i in range(n):
+        if i == n - 1:
+            print(a[i])
+        else:
+            print(a[i], end=' ')
+    return
+
+
+# find_zig_zag_sequence([1, 2, 3, 4, 5, 6, 7], 7)
+
+
+def tower_breakers(n, m):
+    if m == 1 or n % 2 == 0:
+        return 2
+
+    return 1
+
+
+# print(tower_breakers(2, 6))
+
+def caesar_cipher(s, k):
+    # res = s[k:] + s[:k]
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    res = ''
+    for char in range(len(s)):
+        if s[char].isalpha():
+            i = alphabet.index(s[char].lower())
+            tmp = alphabet[(i + k) % len(alphabet)]
+            res = res + tmp if s[char].islower() else res + tmp.upper()
+        else:
+            res = res + s[char]
+
+    print(res)
+
+
+# caesar_cipher("middle-Outz", 2)
+
+def palindrome_index(s):
+    for i in range(len(s) // 2):
+        if s[i] != s[-(i + 1)]:
+            newstr = s[:i] + s[i + 1:]
+            if newstr == newstr[::-1]:
+                return i
+            return -(i + 1) + len(s)
+    return -1
+
+
+# print(palindrome_index("reefer"))
