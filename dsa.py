@@ -207,3 +207,69 @@ def palindrome_index(s):
 
 
 # print(palindrome_index("reefer"))
+
+
+def grid_challenge(grid):
+    n = len(grid)
+    for i in range(n):
+        grid[i] = ''.join(sorted(grid[i]))
+    for i in range(n - 1):
+        for j in range(len(grid[i])):
+            print(j)
+            if grid[i][j] > grid[i + 1][j]:
+                return "NO"
+    return "YES"
+
+
+# print(grid_challenge(['ebacd', 'fghij', 'olmkn', 'trpqs', 'xywuv']))
+# print(grid_challenge(['abc', 'lmp', 'qrt']))
+# print(grid_challenge(['abc', 'hjk', 'mpq', 'rtv']))
+
+
+def super_digit(n, k):
+    res = 0
+    if len(n) == 1 and k == 1:
+        return int(n)
+    else:
+        res = sum(map(int, n))
+        return super_digit(str(res * k), 1)
+
+
+# print(super_digit('148', 3))
+# print(super_digit('9785', 4))
+
+
+def minimum_bribes(q):
+    bribes = 0
+    for i, el in enumerate(q):
+        if el - i > 3:
+            print('Too chaotic')
+            return
+        for j in range(max(0, el - 2), i):  # optimized
+            if q[j] > el:
+                bribes += 1
+    print(bribes)
+
+
+# minimum_bribes([2, 1, 5, 3, 4])
+# minimum_bribes([2, 5, 1, 3, 4])
+
+
+def truck_tour(petrolpumps):
+    n = len(petrolpumps)
+    fuel, i = 0, 0
+    low = i
+    while low < n:
+        fuel += petrolpumps[low][0] - petrolpumps[low][1]
+        if fuel < 0:
+            i += 1
+            low = i
+            fuel = 0
+
+        else:
+            low += 1
+
+    return i
+
+
+# print(truck_tour([[1, 5], [10, 3], [3, 4]]))
