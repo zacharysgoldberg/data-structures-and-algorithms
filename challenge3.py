@@ -2,29 +2,29 @@
 from time import time
 
 # [Original target words]
-words = {
-    "albums", "barely", "befoul", "convex",
-    "hereby", "jigsaw", "tailor", "weaver",
-}
-
-# [Original pieces]
-pieces = [
-    "al", 'bums', 'bar', 'ely', 'be',
-    'foul', 'con', 'vex', 'here', 'by',
-    'jig', 'saw', 'tail', 'or', 'we', 'aver',
-]
-
-# [Larger set and scrambled pieces]
 # words = {
-#     "Four", "score", "and", "seven", "year", "sagging", "oour", "faathers", "brought", "forth", "on", "this", "containent", "anew", "nation", "conceive", "dinz", "Liberty", "andd", "dedicated", "too", "bearing", "proposition", "thats", "all", "men", "happy", "created", "equal", "Nows", "time", "wear", "eengaged", "wrong", "happen", "greaht", "civil", "wars", "testing", "whether", "isnt", "naption", "cleared", "nartions", "albums", "barely", "befoul", "convex",
+#     "albums", "barely", "befoul", "convex",
 #     "hereby", "jigsaw", "tailor", "weaver",
 # }
 
+# # [Original pieces]
 # pieces = [
-#     "al", 'bar', 'ely', 'be', 'bums',
-#     'foul', 'con', 'vex', 'here', 'saw', 'by',
-#     'tail', 'jig', 'or', 'aver', 'we', "Fo", "ur", "sco", "re", "se", "ging", "ven", "ye", "ar", "sag", "oo", "ur", "faat", "hers", "brou", "ght", "for", "th", "o", "n", "th", "is", "cont", "ainent", "an", "ew", "nat", "ion", "conc", "eive", "di", "nz", "Lib", "erty", "an", "dd", "dedic", "ated", "to", "o", "bear", "ing", "propo", "sition", "th", "ats", "al", "l", "me", "n", "hap", "py", "crea", "ted", "eq", "ual", "No", "ws", "ti", "me", "we", "ar", "eeng", "aged", "wro", "ng", "aht", "hap", "gre", "pen", "civ", "il", "wa", "rs", "test", "ing", "whet", "her", "is", "nt", "napt", "nar", "ion", "cle", "ared", "tions",
+#     "al", 'bums', 'bar', 'ely', 'be',
+#     'foul', 'con', 'vex', 'here', 'by',
+#     'jig', 'saw', 'tail', 'or', 'we', 'aver',
 # ]
+
+# [Larger set and scrambled pieces]
+words = {
+    "Four", "score", "and", "seven", "year", "sagging", "oour", "faathers", "brought", "forth", "on", "this", "containent", "anew", "nation", "conceive", "dinz", "Liberty", "andd", "dedicated", "too", "bearing", "proposition", "thats", "all", "men", "happy", "created", "equal", "Nows", "time", "wear", "eengaged", "wrong", "happen", "greaht", "civil", "wars", "testing", "whether", "isnt", "naption", "cleared", "nartions", "albums", "barely", "befoul", "convex",
+    "hereby", "jigsaw", "tailor", "weaver",
+}
+
+pieces = [
+    "al", 'bar', 'ely', 'be', 'bums',
+    'foul', 'con', 'vex', 'here', 'saw', 'by',
+    'tail', 'jig', 'or', 'aver', 'we', "Fo", "ur", "sco", "re", "se", "ging", "ven", "ye", "ar", "sag", "oo", "ur", "faat", "hers", "brou", "ght", "for", "th", "o", "n", "th", "is", "cont", "ainent", "an", "ew", "nat", "ion", "conc", "eive", "di", "nz", "Lib", "erty", "an", "dd", "dedic", "ated", "to", "o", "bear", "ing", "propo", "sition", "th", "ats", "al", "l", "me", "n", "hap", "py", "crea", "ted", "eq", "ual", "No", "ws", "ti", "me", "we", "ar", "eeng", "aged", "wro", "ng", "aht", "hap", "gre", "pen", "civ", "il", "wa", "rs", "test", "ing", "whet", "her", "is", "nt", "napt", "nar", "ion", "cle", "ared", "tions",
+]
 
 
 def find_whole_words(words, pieces):

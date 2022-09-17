@@ -257,19 +257,27 @@ def minimum_bribes(q):
 
 def truck_tour(petrolpumps):
     n = len(petrolpumps)
-    fuel, i = 0, 0
-    low = i
-    while low < n:
-        fuel += petrolpumps[low][0] - petrolpumps[low][1]
+    fuel, start = 0, 0
+    i = start
+    while i < n:
+        fuel += petrolpumps[i][0] - petrolpumps[i][1]
+        # print(fuel)
         if fuel < 0:
-            i += 1
-            low = i
+            start += 1
+            i = start
             fuel = 0
-
         else:
-            low += 1
+            i += 1
 
-    return i
+    return start
 
 
 # print(truck_tour([[1, 5], [10, 3], [3, 4]]))
+
+
+def merge_linked_lists(head1, head2):
+
+    return
+
+
+# print(merge_linked_lists())
