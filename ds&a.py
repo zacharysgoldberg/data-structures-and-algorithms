@@ -1,5 +1,6 @@
 from time import time
 from collections import Counter
+import string
 
 
 class Solution(object):
@@ -273,6 +274,45 @@ def truck_tour(petrolpumps):
 
 
 # print(truck_tour([[1, 5], [10, 3], [3, 4]]))
+
+
+# [Recursive palindrome detection]
+def is_palindrome_r(s):
+    print(s[1:-1])
+    if len(s) <= 1:
+        return True
+    elif s[0] != s[-1]:
+        return False
+    else:
+        return is_palindrome_r(s[1:-1])
+
+
+# print(is_palindrome_r("racecar"))
+
+def is_palindrome(s):
+    if s == s[::-1]:
+        return s
+    return False
+
+
+# print(is_palindrome('racecar'))
+
+
+def get_max(operations):
+    items = [0]
+    for i in range(len(operations)):
+        nums = list(map(int, operations[i].split()))
+        if nums[0] == 1:
+            items.append(max(nums[1], items[-1]))
+        elif nums[0] == 2:
+            items.pop()
+        else:
+            print(items[-1])
+    items.remove(0)
+    return items
+
+
+# print(get_max(['1 83', '3', '2', '1 76']))
 
 
 def merge_linked_lists(head1, head2):

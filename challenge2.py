@@ -11,28 +11,29 @@ def palindrome(string):
             r += 1
         # temporary substring to check against
         sub = string[l + 1:r]
+        print(sub)
         # print(sub)
         if len(sub) > len(result):
             result = sub
 
-    print(result)
+    # print(result)
 
 
-palindrome("Ilikeracecarsthatgofast")
+palindrome("Ilikeracecarsthatanynagofast")
 
-palindrome("""
-    Fourscoreandsevenyearsagoourfaathersbroughtforthonthiscontainentanewnationconceiv
-    edinzLibertyanddedicatedtothepropositionthatallmenarecreatedequalNowweareengagedi
-    nagreahtcivilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlo
-    ngendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionoft
-    hatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisalto
-    getherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotco
-    nsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveco
-    nsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongre
-    memberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobed
-    edicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedI
-    tisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonore
-    ddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevoti
-    onthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGod
-    shallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeoplesh
-    allnotperishfromtheearth""")
+# palindrome("""
+#     Fourscoreandsevenyearsagoourfaathersbroughtforthonthiscontainentanewnationconceiv
+#     edinzLibertyanddedicatedtothepropositionthatallmenarecreatedequalNowweareengagedi
+#     nagreahtcivilwartestingwhetherthatnaptionoranynartionsoconceivedandsodedicatedcanlo
+#     ngendureWeareqmetonagreatbattlefiemldoftzhatwarWehavecometodedicpateaportionoft
+#     hatfieldasafinalrestingplaceforthosewhoheregavetheirlivesthatthatnationmightliveItisalto
+#     getherfangandproperthatweshoulddothisButinalargersensewecannotdedicatewecannotco
+#     nsecratewecannothallowthisgroundThebravelmenlivinganddeadwhostruggledherehaveco
+#     nsecrateditfaraboveourpoorponwertoaddordetractTgheworldadswfilllittlenotlenorlongre
+#     memberwhatwesayherebutitcanneverforgetwhattheydidhereItisforusthelivingrathertobed
+#     edicatedheretotheulnfinishedworkwhichtheywhofoughtherehavethusfarsonoblyadvancedI
+#     tisratherforustobeherededicatedtothegreattdafskremainingbeforeusthatfromthesehonore
+#     ddeadwetakeincreaseddevotiontothatcauseforwhichtheygavethelastpfullmeasureofdevoti
+#     onthatweherehighlyresolvethatthesedeadshallnothavediedinvainthatthisnationunsderGod
+#     shallhaveanewbirthoffreedomandthatgovernmentofthepeoplebythepeopleforthepeoplesh
+#     allnotperishfromtheearth""")
