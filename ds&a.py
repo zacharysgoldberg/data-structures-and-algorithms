@@ -311,35 +311,4 @@ def get_max(operations):
     return items
 
 
-print(get_max(['1 83', '3', '2', '1 76']))
-
-
-class SinglyLinkedList():
-    def __init__(self):
-        self.next = None
-
-
-def merge_linked_lists(head1, head2):
-    merged_head = SinglyLinkedList()
-    merged = merged_head
-
-    while head1 or head2:
-        if head1 is None:
-            merged.next = head2
-            break
-        elif head2 is None:
-            merged.next = head1
-            break
-        else:
-            if head1.data < head2.data:
-                merged.next = head1
-                head1 = head1.next
-            else:
-                merged.next = head2
-                head2 = head2.next
-        merged = merged.next
-
-    return merged_head.next
-
-
-# print(merge_linked_lists())
+# print(get_max(['1 83', '3', '2', '1 76']))
