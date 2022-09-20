@@ -299,25 +299,47 @@ def is_palindrome(s):
 
 
 def get_max(operations):
-    items = [0]
+    items = []
     for i in range(len(operations)):
         nums = list(map(int, operations[i].split()))
         if nums[0] == 1:
-            items.append(max(nums[1], items[-1]))
+            items.append(nums[1])
         elif nums[0] == 2:
             items.pop()
         else:
-            print(items[-1])
-    items.remove(0)
+            print(max(items))
     return items
 
 
-# print(get_max(['1 83', '3', '2', '1 76']))
+print(get_max(['1 83', '3', '2', '1 76']))
+
+
+class SinglyLinkedList():
+    def __init__(self):
+        self.next = None
 
 
 def merge_linked_lists(head1, head2):
+    merged_head = SinglyLinkedList()
+    merged = merged_head
 
-    return
+    while head1 or head2:
+        if head1 is None:
+            merged.next = head2
+            break
+        elif head2 is None:
+            merged.next = head1
+            break
+        else:
+            if head1.data < head2.data:
+                merged.next = head1
+                head1 = head1.next
+            else:
+                merged.next = head2
+                head2 = head2.next
+        merged = merged.next
+
+    return merged_head.next
 
 
 # print(merge_linked_lists())
