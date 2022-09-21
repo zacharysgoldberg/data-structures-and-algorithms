@@ -1,9 +1,9 @@
 from helper import Node, DoubleNode, LinkedList, DoublyLinkedList
 
 
-def compare_lists(llist1, llist2):
-    lst1 = llist1
-    lst2 = llist2
+def compare_lists(head1, head2):
+    lst1 = head1
+    lst2 = head2
     while lst1 and lst2:
         if lst1.data != lst2.data:
             return 0
@@ -18,7 +18,7 @@ def compare_lists(llist1, llist2):
 
 
 def merge_linked_lists(head1, head2):
-    merged_head = Node()
+    merged_head = LinkedList()  # Empty linked list
     merged = merged_head
 
     while head1 or head2:
@@ -44,6 +44,17 @@ def merge_linked_lists(head1, head2):
 
 
 # print(merge_linked_lists())
+
+def get_node(head, positionFromTail):
+    curr = head
+    index = 0
+    lst = []
+    while curr:
+        lst.append(curr.data)
+        curr = curr.next
+        index += 1
+
+    return lst[index - positionFromTail - 1]
 
 
 def find_merge_node(head1, head2):

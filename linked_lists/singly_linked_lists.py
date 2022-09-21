@@ -52,6 +52,12 @@ def delete_node(head, position):
     return head
 
 
+def reverse_print_linked_list(head):
+    if head:
+        reverse_print_linked_list(head.next)
+        print(head.data)
+
+
 def reverse_linked_list(head):
     nxt = head.next
     curr = head
@@ -66,15 +72,16 @@ def reverse_linked_list(head):
     return reverse
 
 
-def remove_duplicates(llist):
-    node = llist
-    while node.next:
-        if node.data == node.next.data:
-            node.next = node.next.next
+def remove_duplicates(head):
+    curr = head
+    while curr.next:
+        if curr.data == curr.next.data:
+            # Reassign the next node value to the next value that's different
+            curr.next = curr.next.next
         else:
-            node = node.next
+            curr = curr.next
 
-    return llist
+    return head
 
 
 def has_cycle(head):
