@@ -1,9 +1,149 @@
+from collections import Counter
+
+
+def majority_element(nums):
+    cnt = Counter(nums).most_common(1)[0][0]
+    print(cnt)
+
+
+# majority_element([2, 2, 2, 1, 3, 2, 2, 3, 1])
+
+
+def plus_minus(arr):
+    pos, neg, zero = 0, 0, 0
+    for i in arr:
+        if i > 0:
+            pos += 1
+        elif i < 0:
+            neg += 1
+        else:
+            zero += 1
+    print(pos / len(arr))
+    print(neg / len(arr))
+    print(zero / len(arr))
+
+
+# plus_minus([-4, 3, -9, 0, 4, 1])
+
+
+def mini_max_sum(arr):
+    arr.sort()
+    min = sum(arr[:-1])
+    max = sum(arr[1:])
+
+    print(min, max)
+
+
+# mini_max_sum([1, 2, 3, 4, 5])
+
 def reverse_array(a):
     a.reverse()
     return a
 
 
 # print(reverseArray([1, 2, 3, 4]))
+
+
+def diagonal_difference(arr):
+    n = 3
+    d1 = sum(arr[i][i] for i in range(n))
+    d2 = sum(arr[i][n - 1 - i] for i in range(n))
+    # for i in range(n):
+    #     d1 += arr[i][i]
+
+    # for i in range(n):
+    #     d2 += arr[i][n - 1 - i]
+
+    return abs(d1 - d2)
+
+
+# print(diagonal_difference([[11, 2, 4], [4, 5, 6], [10, 8, -12]]))
+
+def counting_sort(arr):
+    counter = [0] * 100
+    for num in arr:
+        if counter[num] == 0:
+            counter[num] += arr.count(num)
+
+    print(counter)
+
+
+# counting_sort([63, 25, 73, 1, 98, 73, 56, 84, 86, 57, 16, 83, 8, 25, 81, 56, 9, 53, 98, 67, 99, 12, 83, 89, 80, 91, 39, 86, 76, 85, 74, 39, 25, 90, 59, 10, 94, 32, 44, 3, 89, 30, 27, 79, 46, 96, 27, 32, 18, 21, 92, 69, 81, 40, 40, 34, 68, 78, 24, 87, 42, 69, 23, 41, 78, 22, 6, 90, 99, 89, 50, 30, 20, 1, 43, 3, 70, 95, 33, 46, 44, 9, 69, 48, 33, 60, 65, 16, 82, 67, 61, 32, 21, 79, 75, 75, 13, 87, 70, 33])
+
+
+def flipping_matrix(matrix):
+    n = len(matrix)
+    maximal = 0
+    for i in range(n // 2):
+        for j in range(n // 2):
+            maximal += max(matrix[i][j],
+                           matrix[i][n - j - 1],
+                           matrix[n - i - 1][j],
+                           matrix[n - i - 1][n - j - 1])
+    print(maximal)
+
+
+# flipping_matrix([[112, 42, 83, 119],
+#                  [56, 125, 56, 49],
+#                 [15, 78, 101, 43],
+#                 [62, 98, 114, 108]])
+
+def find_zig_zag_sequence(a, n):
+    a.sort()
+    mid = int((n + 1) / 2 - 1)
+    a[mid], a[n - 1] = a[n - 1], a[mid]
+
+    st = mid + 1
+    ed = n - 2
+    while st <= ed:
+        a[st], a[ed] = a[ed], a[st]
+        st = st + 1
+        ed = ed - 1
+
+    for i in range(n):
+        if i == n - 1:
+            print(a[i])
+        else:
+            print(a[i], end=' ')
+    return
+
+
+# find_zig_zag_sequence([1, 2, 3, 4, 5, 6, 7], 7)
+
+
+def minimum_bribes(q):
+    bribes = 0
+    for i, el in enumerate(q):
+        if el - i > 3:
+            print('Too chaotic')
+            return
+        for j in range(max(0, el - 2), i):  # optimized
+            if q[j] > el:
+                bribes += 1
+    print(bribes)
+
+
+# minimum_bribes([2, 1, 5, 3, 4])
+# minimum_bribes([2, 5, 1, 3, 4])
+
+def truck_tour(petrolpumps):
+    n = len(petrolpumps)
+    fuel, start = 0, 0
+    i = start
+    while i < n:
+        fuel += petrolpumps[i][0] - petrolpumps[i][1]
+        # print(fuel)
+        if fuel < 0:
+            start += 1
+            i = start
+            fuel = 0
+        else:
+            i += 1
+
+    return start
+
+
+# print(truck_tour([[1, 5], [10, 3], [3, 4]]))
 
 
 def hourglass_sum(arr):
