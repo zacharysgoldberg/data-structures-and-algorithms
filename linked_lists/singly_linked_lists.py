@@ -47,7 +47,7 @@ def delete_node(head, position):
     while index < position - 1:
         curr = curr.next
         index += 1
-
+    print(curr.next.data)
     curr.next = curr.next.next
     return head
 
