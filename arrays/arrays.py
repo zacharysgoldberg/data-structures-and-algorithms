@@ -28,8 +28,8 @@ def plus_minus(arr):
 
 def mini_max_sum(arr):
     arr.sort()
-    min = sum(arr[:-1])
-    max = sum(arr[1:])
+    min = sum(arr[:-1])  # exclusive
+    max = sum(arr[1:])  # inclusive
 
     print(min, max)
 
@@ -58,6 +58,15 @@ def diagonal_difference(arr):
 
 
 # print(diagonal_difference([[11, 2, 4], [4, 5, 6], [10, 8, -12]]))
+
+
+def birthday_cake_candles(candles):
+    tallest = candles.count(max(candles))
+    return tallest
+
+
+# print(birthday_cake_candles([3, 2, 1, 3]))
+
 
 def counting_sort(arr):
     counter = [0] * 100

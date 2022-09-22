@@ -1,18 +1,26 @@
+def staircase(n):
+    i = 0
+    spaces = n - 1
+    while i < n:
+        print((' ' * spaces) + '#' * (i + 1))
+        i += 1
+        spaces -= 1
+
+# staircase(6)
+
+
 def time_conversion(s):
-    if s[0:2] == "12" and "PM" in s:
-        print(s.replace(s[-2::], ""))
-    elif s[0:2] == "12" and "AM" in s:
-        time = s.replace("AM", "").replace("12", "00")
-        print(time)
-    elif s[0:2] != "12" and 'AM' in s:
-        print(s.replace("AM", ""))
+    time = ''
+    if 'PM' in s and s[0:2] != '12':
+        pm = str(int(s[0:2]) + 12)
+        return time + pm + s[2:-2]
+    elif 'AM' in s and s[0:2] == '12':
+        return time + '00' + s[2:-2]
     else:
-        t = str(int(s[0:2]) + 12)
-        time = s.replace(s[0:2], t).replace(s[-2::], "")
-        print(time)
+        return time + s[:-2]
 
 
-# time_conversion("06:40:03AM")
+# print(time_conversion("06:40:03AM"))
 
 
 def caesar_cipher(s, k):
@@ -111,3 +119,16 @@ def get_max(operations):
 
 
 # print(get_max(['1 83', '3', '2', '1 76']))
+
+
+def fizzBuzz(n):
+    for i in range(1, n + 1):
+        if i % 3 == 0 and i % 5 == 0:
+            print('FizzBuzz')
+        elif i % 3 == 0:
+            print('Fizz')
+        elif i % 5 == 0:
+            print('Buzz')
+        else:
+            print(i)
+# fizzBuzz(15)
