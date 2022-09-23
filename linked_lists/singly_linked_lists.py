@@ -1,6 +1,18 @@
 from helper import Node, LinkedList
 
 
+def print_linked_list(head):
+    # curr = head
+    # while curr:
+    #     print(curr.data)
+    #     curr = curr.next
+
+    # [recursive]
+    if head:
+        print(head.data)
+        print_linked_list(head.next)
+
+
 def insert_node_at_head(head, data):
     new_node = Node(data)
     new_node.next = head
@@ -9,31 +21,40 @@ def insert_node_at_head(head, data):
 
 def insert_node_at_tail(head, data):
     new_node = Node(data)
-    curr = head
     if head is None:
-        head = new_node
-        return head
+        return new_node
+    # curr = head
+    # while curr.next:
+    #     curr = curr.next
+    # curr.next = new_node
 
-    while curr.next:
-        curr = curr.next
-
-    curr.next = new_node
+    # [recursive]
+    elif head.next is None:
+        head.next = new_node
+    else:
+        insert_node_at_tail(head.next, data)
     return head
 
 
 def insert_node_at_position(head, data, position):
     new_node = Node(data)
-    curr = head
-    index = 0
-    while curr:
-        if index == position - 1:
-            new_node.next = curr.next
-            curr.next = new_node
-            break
-        else:
-            curr = curr.next
-            index += 1
+    # index = 0
+    # curr = head
+    # while curr:
+    #     if index == position - 1:
+    #         new_node.next = curr.next
+    #         curr.next = new_node
+    #         break
+    #     else:
+    #         curr = curr.next
+    #         index += 1
 
+    # [recursive]
+    if head and position == 1:
+        new_node.next = head.next
+        head.next = new_node
+    else:
+        insert_node_at_position(head.next, data, position - 1)
     return head
 
 
