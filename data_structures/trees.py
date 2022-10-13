@@ -1,4 +1,4 @@
-from helper import BinarySearchTreeNode
+from helpers import BinarySearchTreeNode
 
 
 class BinarySearchTree:
@@ -33,28 +33,28 @@ class BinarySearchTree:
         return -1
 
     def level_order(self, root):
-        queue = [root]
-        while len(queue) > 0:
-            print(queue[0].info, end=" ")
-            node = queue.pop(0)
+        nodes = [root]
+        while nodes:
+            print(nodes[0].info, end=" ")
+            node = nodes.pop(0)
 
             if node.left:
-                queue.append(node.left)
+                nodes.append(node.left)
             if node.right:
-                queue.append(node.right)
+                nodes.append(node.right)
 
     def top_view(self, root):
         level = [(root, 0)]
         viewable = {}
 
         while level:
-            node, score = level.pop(0)
-            if score not in viewable:
-                viewable[score] = node.info
+            node, data = level.pop(0)
+            if data not in viewable:
+                viewable[data] = node.info
             if node.left:
-                level.append((node.left, score - 1))
+                level.append((node.left, data - 1))
             if node.right:
-                level.append((node.right, score + 1))
+                level.append((node.right, data + 1))
 
         for data in sorted(viewable):
             print(viewable[data], end=" ")
@@ -64,19 +64,19 @@ class BinarySearchTree:
         if not self.root:
             self.root = new_node
             return self.root
-        curr = self.root
-        while curr:
-            if curr.info > val:
-                if curr.left:
-                    curr = curr.left
+        root = self.root
+        while root:
+            if root.info > val:
+                if root.left:
+                    root = root.left
                 else:
-                    curr.left = new_node
+                    root.left = new_node
                     break
             else:
-                if curr.right:
-                    curr = curr.right
+                if root.right:
+                    root = root.right
                 else:
-                    curr.right = new_node
+                    root.right = new_node
                     break
         # [for recursion]
         # if not self.root:
@@ -84,7 +84,7 @@ class BinarySearchTree:
         # else:
         #     self.insertion(self.root, val)
 
-        return self.root
+        return root
 
     # [for recursion]
     def insertion(self, cur, val):
@@ -101,12 +101,45 @@ class BinarySearchTree:
     def lca(self, root, v1, v2):
         node = root
         while node:
-            # print(node)
             if max(v1, v2) < node.info:
                 node = node.left
             elif min(v1, v2) > node.info:
                 node = node.right
             else:
-                break
+                return node
 
-        return node
+    def decode_huff(self, root, string):
+        node = root
+        # for s in string:
+        #     if s == '0':
+        #         node = node.left
+        #     elif s == '1':
+        #         node = node.right
+        #     if node.data != '\0':
+        #         print(node.data, end="")
+        #         node = root
+
+        decoded = ''
+        for i in range(len(string)):
+            if string[i] == '0':
+                node = node.left
+            else:
+                node = node.right
+            if not node.left or not node.right:
+                decoded += node.data
+                node = root
+        print(decoded)
+# ==================================================================================================
+    prev = None
+
+    def check_binary_search_tree_(self, root):
+        global prev
+        if root:
+            if not self.check_binary_search_tree_(root.left):
+                return False
+            if prev and root.data <= prev.data:
+                return False
+            prev = root
+            return self.check_binary_search_tree_(root.right)
+
+        return True

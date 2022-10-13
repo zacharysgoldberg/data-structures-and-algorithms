@@ -1,4 +1,4 @@
-from helper import Node, DoubleNode, LinkedList, DoublyLinkedList
+from helpers import Node, DoubleNode, LinkedList, DoublyLinkedList
 
 
 def compare_lists(head1, head2):
@@ -45,7 +45,7 @@ def merge_linked_lists(head1, head2):
 
 # print(merge_linked_lists())
 
-def get_node(head, positionFromTail):
+def get_node(head, n):
     curr = head
     index = 0
     lst = []
@@ -54,7 +54,7 @@ def get_node(head, positionFromTail):
         curr = curr.next
         index += 1
 
-    return lst[index - positionFromTail - 1]
+    return lst[index - n - 1]
 
 
 def find_merge_node(head1, head2):
