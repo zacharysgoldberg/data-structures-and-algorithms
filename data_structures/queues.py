@@ -1,7 +1,7 @@
 from doubly_linked_lists import DoublyLinkedList
 from stacks import MyStack
 
-# [Using Doubly Linked Lists and Nodes]
+# [Using Doubly Linked Lists/Nodes]
 
 
 class MyQueue:

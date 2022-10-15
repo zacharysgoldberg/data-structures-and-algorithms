@@ -18,7 +18,7 @@ class DoublyLinkedList:
         curr = self.head
         while curr:
             lst_length += 1
-            curr = curr.next_element
+            curr = curr.next
         return lst_length
 
     def insert_tail(self, data):
@@ -27,23 +27,21 @@ class DoublyLinkedList:
             self.head = node
             self.tail = node
         else:
-            self.tail.next_element = node
-            node.previous_element = self.tail
+            self.tail.next = node
+            node.prev = self.tail
             self.tail = node
         return node
 
     def remove_head(self):
         if (self.is_empty()):
             return False
-        nodeToRemove = self.head
-        if self.length() == 1:
-            self.head = None
-            self.tail = None
-        else:
-            self.head = nodeToRemove.next_element
-            self.head.previous_element = None
-            nodeToRemove.next_element = None
-        return nodeToRemove.data
+        self.head
+        temp = self.head
+        self.head = self.head.next
+        temp = None
+        if self.head:
+            self.head.prev = None
+            return self.head.data
 
     def sorted_insert_node(self, head, data):
         node = DoubleNode(data)
