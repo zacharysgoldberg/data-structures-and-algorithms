@@ -21,15 +21,22 @@ class DoublyLinkedList:
             curr = curr.next
         return lst_length
 
+    def insert_head(self, data):
+        node = DoubleNode(data)
+        node.next = self.head
+        if self.is_empty():
+            self.head = node
+        self.head.prev = node
+
     def insert_tail(self, data):
         node = DoubleNode(data)
-        if (self.is_empty()):
+        if self.is_empty():
             self.head = node
             self.tail = node
         else:
             self.tail.next = node
             node.prev = self.tail
-            self.tail = node
+            self.tail = node.prev
         return node
 
     def remove_head(self):
@@ -43,12 +50,12 @@ class DoublyLinkedList:
             self.head.prev = None
             return self.head.data
 
-    def sorted_insert_node(self, head, data):
+    def sorted_insert_node(self, data):
         node = DoubleNode(data)
-        cur = head
-        if head is None:
-            head = node
-            return head
+        cur = self.head
+        if self.head is None:
+            self.heads = node
+            return self.head
         elif data <= cur.data:
             node.next = cur
             cur.prev = node
@@ -60,7 +67,7 @@ class DoublyLinkedList:
                     cur.prev = node
                     cur.next = node
                     node.prev = cur
-                    return head
+                    return self.head
                 else:
                     cur = cur.next
             cur.next = node

@@ -1,5 +1,7 @@
-from helpers import BinarySearchTreeNode
+from helpers import BSTNode
 from collections import deque
+import pickle
+import sys
 
 
 class BinarySearchTree:
@@ -124,16 +126,14 @@ class BinarySearchTree:
         return -1
 
     def level_order(self, root):
-        result = ""
         nodes = [root]
         while nodes:
-            result += str(nodes[0].data) + " "
+            print(str(nodes[0].data) + " ", end="")
             node = nodes.pop(0)
             if node.left:
                 nodes.append(node.left)
             if node.right:
                 nodes.append(node.right)
-        return result
 
     def reverse_level_order(self, root):
         result = deque()
@@ -151,7 +151,7 @@ class BinarySearchTree:
 
         return result
 
-    def find_level_averages(self, root):
+    def level_order_averages(self, root):
         result = []
         nodes = [root]
         while nodes:
@@ -167,7 +167,7 @@ class BinarySearchTree:
 
         return result
 
-    def find_level_order_successor(self, root, key):
+    def level_order_successor(self, root, key):
         if root is None:
             return None
         res = [root]
@@ -203,6 +203,131 @@ class BinarySearchTree:
 
         return result
 
+    def connect_level_order_siblings(self, root):
+        nodes = [root]
+        while nodes:
+            prev = None
+            for _ in range(len(nodes)):
+                node = nodes.pop(0)
+                if prev:
+                    prev.next = node
+                prev = node
+                if node.left:
+                    nodes.append(node.left)
+                if node.right:
+                    nodes.append(node.right)
+    """
+    Converting a tree into a doubly linked list
+    """
+
+    prev = None
+
+    def convert_to_linked_list(self, root):
+        if root:
+            head = self.convert_to_linked_list(root.left)
+            global prev
+            if prev:
+                root.left = prev
+                prev.right = root
+            else:
+                head = root
+
+            prev = root
+            self.convert_to_linked_list(root.right)
+            return head
+        return None
+
+    # [Print Tree Perimeter]
+    def display_tree_perimeter(self, root):
+        result = []
+        self.left_perimeter(root, result)
+        self.leaf_nodes(root.left, result)
+        self.leaf_nodes(root.right, result)
+        self.right_perimeter(root, result)
+        result.pop()
+        return " ".join(map(str, result))
+
+    def leaf_nodes(self, root, result):
+        if root:
+            self.leaf_nodes(root.left, result)
+            if root.left is None and root.right is None:
+                result.append(root.data)
+
+            self.leaf_nodes(root.right, result)
+
+    def left_perimeter(self, root, result):
+        if root:
+            if root.left:
+                result.append(root.data)
+                self.left_perimeter(root.left, result)
+            elif root.right:
+                result.append(root.data)
+                self.left_perimeter(root.right, result)
+
+    def right_perimeter(self, root, result):
+        if root:
+            if root.right:
+                self.right_perimeter(root.right, result)
+                result.append(root.data)
+            elif root.left:
+                self.right_perimeter(root.left, result)
+                result.append(root.data)
+
+# ================================================================
+
+    def populate_sibling_pointers(self, root):
+        curr = root
+        last = root
+        while curr:
+            if curr.left:
+                last.next = curr.left
+                last = curr.left
+            if curr.right:
+                last.next = curr.right
+                last = curr.right
+            curr = curr.next
+        return root
+    # [Serialize/Deserialize BST]
+
+    def serialize(self, node, stream):
+        if node is None:
+            stream.dump(sys.maxsize)    # Marker for null pointers
+            return
+        stream.dump(node.data)
+        self.serialize(node.left, stream)
+        self.serialize(node.right, stream)
+
+    def deserialize(self, stream):
+        try:
+            data = pickle.load(stream)
+            if data == sys.maxsize:
+                return None
+
+            node = BSTNode(data)
+            node.left = self.deserialize(stream)
+            node.right = self.deserialize(stream)
+            return node
+        except pickle.UnpicklingError:
+            return None
+
+# =============================================================
+
+    def find_nth_highest_in_bst(self, node, n):
+        if node is None:
+            return None
+
+        left_count = 0
+        if node.left:
+            left_count = node.left.count
+        k = node.count - left_count
+
+        if k == n:
+            return node
+        elif k > n:
+            return self.find_nth_highest_in_bst(node.right, n)
+        else:
+            return self.find_nth_highest_in_bst(node.left, n - k)
+
     def top_view(self, root):
         level = [(root, 0)]
         viewable = {}
@@ -219,7 +344,7 @@ class BinarySearchTree:
             print(viewable[data], end=" ")
 
     def insert(self, val):
-        new_node = BinarySearchTreeNode(val)
+        new_node = BSTNode(val)
         if not self.root:
             self.root = new_node
             return self.root
@@ -239,7 +364,7 @@ class BinarySearchTree:
                     break
         # [for recursion]
         # if not self.root:
-        #     self.root = BinarySearchTreeNode(val)
+        #     self.root = BSTNode(val)
         # else:
         #     self.insertion(self.root, val)
 
@@ -248,7 +373,7 @@ class BinarySearchTree:
     # [for recursion]
     def insertion(self, cur, val):
         if not cur:
-            curr = BinarySearchTreeNode(val)
+            curr = BSTNode(val)
         elif curr.info > val:
             curr.left = self.insertion(curr.left, val)
         else:
@@ -291,15 +416,15 @@ class BinarySearchTree:
 # ==================================================================================================
     prev = None
 
-    def check_binary_search_tree_(self, root):
+    def is_bst(self, root):
         global prev
         if root:
-            if not self.check_binary_search_tree_(root.left):
+            if not self.is_bst(root.left):
                 return False
             if prev and root.data <= prev.data:
                 return False
             prev = root
-            return self.check_binary_search_tree_(root.right)
+            return self.is_bst(root.right)
 
         return True
 
@@ -326,3 +451,22 @@ class InorderIterator:
         val = self.stack.pop()
         self.push(val.right)
         return val
+
+
+def display_tree_perimeter(root):
+  result = ""
+  left = []
+  while root:
+    node = root.data
+    if root.left:
+      root = root.left
+    elif root.right:
+      root = root.right
+    else:
+      break
+    left.append(str(node)
+
+
+  # print(result)
+  # print(right)
+  return left
