@@ -23,7 +23,7 @@ class BinarySearchTree:
     def inorder(self, root):
         if root:
             self.inorder(root.left)
-            print(root.info, end=" ")
+            print(root.data, end=" ")
             self.inorder(root.right)
 
     def inorder_iterative(self, root):
@@ -109,12 +109,19 @@ class BinarySearchTree:
         if root1 is None and root2 is None:
             return True
 
-        if root1 is not None and root2 is not None:
-            return root1.data == root2.data and \
-                self.are_identical(root1.left, root2.left) and \
-                self.are_identical(root1.right, root2.right)
+        return (root1 and root2) and (root1.data == root2.data) \
+            and self.are_identical(root1.left, root2.left) and \
+            self.are_identical(root1.right, root2.right)
 
-        return False
+        # if root1 is None and root2 is None:
+        #     return True
+
+        # if root1 is not None and root2 is not None:
+        #     return root1.data == root2.data and \
+        #         self.are_identical(root1.left, root2.left) and \
+        #         self.are_identical(root1.right, root2.right)
+
+        # return False
 
     def height(self, root):
         if root:
@@ -190,16 +197,16 @@ class BinarySearchTree:
             curr_level = []
             for _ in range(len(nodes)):
                 node = nodes.pop(0)
-            if zig_zag is True:
-                curr_level.insert(0, node.val)
-            else:
-                curr_level.append(node.val)
-            if node.left:
-                nodes.append(node.left)
-            if node.right:
-                nodes.append(node.right)
+                if zig_zag is True:
+                    curr_level.insert(0, node.data)
+                else:
+                    curr_level.append(node.data)
+                if node.left:
+                    nodes.append(node.left)
+                if node.right:
+                    nodes.append(node.right)
             result.append(curr_level)
-            zig_zag = not zig_zag   # Reverses truthy or falsey
+            zig_zag = not zig_zag
 
         return result
 
@@ -216,6 +223,7 @@ class BinarySearchTree:
                     nodes.append(node.left)
                 if node.right:
                     nodes.append(node.right)
+
     """
     Converting a tree into a doubly linked list
     """
@@ -357,7 +365,7 @@ class BinarySearchTree:
 
     def delete_zero_sum_subtree(self, root):
         if root:
-            zero_sum = self.self.helper(root)
+            zero_sum = self.helper(root)
             if zero_sum == 0:
                 root = None
         return
@@ -367,7 +375,7 @@ class BinarySearchTree:
         return self.convert_to_binary(node, 'left')
 
     def convert_to_binary(self, root, direction):
-        node = self.BSTNode(root.data)
+        node = BSTNode(root.data)
         last = node
 
         for child in root.children:
@@ -415,30 +423,30 @@ class BinarySearchTree:
         for data in sorted(viewable):
             print(viewable[data], end=" ")
 
-    def insert(self, val):
-        new_node = BSTNode(val)
-        if not self.root:
-            self.root = new_node
-            return self.root
-        root = self.root
-        while root:
-            if root.info > val:
-                if root.left:
-                    root = root.left
-                else:
-                    root.left = new_node
-                    break
-            else:
-                if root.right:
-                    root = root.right
-                else:
-                    root.right = new_node
-                    break
+    def insert(self, root, val):
+        # new_node = BSTNode(val)
+        # if not root:
+        #     root = new_node
+        #     return root
+        # root = self.root
+        # while root:
+        #     if root.info > val:
+        #         if root.left:
+        #             root = root.left
+        #         else:
+        #             root.left = new_node
+        #             break
+        #     else:
+        #         if root.right:
+        #             root = root.right
+        #         else:
+        #             root.right = new_node
+        #             break
         # [for recursion]
-        # if not self.root:
-        #     self.root = BSTNode(val)
-        # else:
-        #     self.insertion(self.root, val)
+        if not root:
+            root = BSTNode(val)
+        else:
+            self.insertion(root, val)
 
         return root
 
@@ -486,19 +494,63 @@ class BinarySearchTree:
                 node = root
         print(decoded)
 # ==================================================================================================
-    prev = None
 
-    def is_bst(self, root):
+    def tree_sum(self, root):
+        if root is None:
+            return 0
+        left_sum = self.tree_sum(root.left)
+        right_sum = self.tree_sum(root.right)
+        return root.data + left_sum + right_sum
+
+    def tree_max(self, root):
+        if root is None:
+            return float('-inf')
+        left_max = self.tree_max(root.left)
+        right_max = self.tree_max(root.right)
+        return max(root.data, left_max, right_max)
+
+    def tree_height(self, root):
+        if root is None:
+            return 0
+        left_height = self.tree_height(root.left)
+        right_height = self.tree_height(root.right)
+        return 1 + max(left_height, right_height)
+
+    def exists_in_tree(self, root, val):
+        if root is None:
+            return False
+        left = self.exists_in_tree(root.left, val)
+        right = self.exists_in_tree(root.right, val)
+        return root.data == val or (left or right)
+
+    def reverse_tree(self, root):
+        if root is None:
+            return
+        self.reverse_level_order(root.left)
+        self.reverse_level_order(root.right)
+        root.left, root.right = root.right, root.left
+
+    # space complexity O(h)
+    def is_bst(self, root, min=float('-inf'), max=float('inf')):
+        if root is None:
+            return True
+        elif not min < root.data < max:
+            return False
+        else:
+            return self.is_bst(root.left, min, root.data) and \
+                self.is_bst(root.right, root.data, max)
+
+    # space complexity O(n)
+    def bst(self, root):
         global prev
-        if root:
-            if not self.is_bst(root.left):
-                return False
-            if prev and root.data <= prev.data:
-                return False
-            prev = root
-            return self.is_bst(root.right)
-
-        return True
+        if root is None:
+            return True
+        if not self.bst(root.left):
+            return False
+        elif prev and root.data < prev.data:
+            return False
+        prev = root
+        return self.bst(root.right)
 
 
 class InorderIterator:
@@ -526,19 +578,35 @@ class InorderIterator:
 
 
 def display_tree_perimeter(root):
-  result = ""
-  left = []
-  while root:
-    node = root.data
-    if root.left:
-      root = root.left
-    elif root.right:
-      root = root.right
-    else:
-      break
-    left.append(str(node)
+    left = []
+    while root:
+        node = root.data
+        if root.left:
+            root = root.left
+        elif root.right:
+            root = root.right
+        else:
+            break
+        left.append(str(node.data))
+    return "".join(left)
 
 
-  # print(result)
-  # print(right)
-  return left
+if __name__ == "__main__":
+    tree1 = BSTNode(100)
+    tree1.left = BSTNode(50)
+    tree1.left.left = BSTNode(25)
+    tree1.left.right = BSTNode(75)
+    tree1.right = BSTNode(200)
+    tree1.right.left = BSTNode(150)
+    tree1.right.right = BSTNode(350)
+    prev = None
+
+    # tree2 = BSTNode(100)
+    # tree2.left = BSTNode(50)
+    # tree2.left.left = BSTNode(25)
+    # tree2.left.right = BSTNode(70)
+    # tree2.right = BSTNode(200)
+    # tree2.right.left = BSTNode(150)
+    # tree2.right.right = BSTNode(350)
+
+    print(BinarySearchTree().bst(tree1))
