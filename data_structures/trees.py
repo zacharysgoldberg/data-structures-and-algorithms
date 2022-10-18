@@ -328,6 +328,78 @@ class BinarySearchTree:
         else:
             return self.find_nth_highest_in_bst(node.left, n - k)
 
+    def mirror_tree(self, root):
+        if root is None:
+            return None
+        if root.left:
+            self.mirror_tree(root.left)
+
+        if root.right:
+            self.mirror_tree(root.right)
+
+        temp = root.left
+        root.left = root.right
+        root.right = temp
+        return root
+
+# [ Delete Zero Sum Sub Tree]
+
+    def helper(self, root):
+        if root is None:
+            return 0
+        sum_left = self.helper(root.left)
+        sum_right = self.helper(root.right)
+        if sum_left == 0:
+            root.left = None
+        if sum_right == 0:
+            root.right = None
+        return root.data + sum_left + sum_right
+
+    def delete_zero_sum_subtree(self, root):
+        if root:
+            zero_sum = self.self.helper(root)
+            if zero_sum == 0:
+                root = None
+        return
+# Convert binary tree to n ary
+
+    def convert_n_ary_to_binary(self, node):
+        return self.convert_to_binary(node, 'left')
+
+    def convert_to_binary(self, root, direction):
+        node = self.BSTNode(root.data)
+        last = node
+
+        for child in root.children:
+            if direction == 'left':
+                last.left = self.convert_to_binary(child, 'right')
+                last = last.left
+            elif direction == 'right':
+                last.right = self.convert_to_binary(child, 'left')
+                last = last.right
+
+        return node
+
+    def convert_binary_to_n_ary(self, node):
+        return self.convert_to_n_ary(node, 'left')
+
+    def convert_to_n_ary(self, root, direction):
+        node = BSTNode(root.data)
+        temp = node
+        if direction == 'left':
+            while temp.left:
+                child = self.convert_to_n_ary(node.left, 'right')
+                node.children.append(child)
+                temp = temp.left
+        elif direction == 'right':
+            while temp.right:
+                child = self.convert_to_n_ary(node.right, 'left')
+                node.children.append(child)
+                temp = temp.right
+        return root
+
+    # =======================================================
+
     def top_view(self, root):
         level = [(root, 0)]
         viewable = {}
