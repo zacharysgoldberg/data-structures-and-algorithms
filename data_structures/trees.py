@@ -1,7 +1,9 @@
+from heapq import heappush, heappop, _siftup, _siftdown
 from helpers import BSTNode
 from collections import deque
 import pickle
 import sys
+from heapq import *
 
 
 class BinarySearchTree:
@@ -123,15 +125,6 @@ class BinarySearchTree:
 
         # return False
 
-    def height(self, root):
-        if root:
-            l = self.height(root.left)
-            r = self.height(root.right)
-            if r > l:
-                return r + 1
-            return l + 1
-        return -1
-
     def level_order(self, root):
         nodes = [root]
         while nodes:
@@ -223,6 +216,22 @@ class BinarySearchTree:
                     nodes.append(node.left)
                 if node.right:
                     nodes.append(node.right)
+
+    def find_minimum_depth(self, root):
+        if root is None:
+            return 0
+        stack = [root]
+        min_depth = 0
+        while stack:
+            min_depth += 1
+            for _ in range(len(stack)):
+                node = stack.pop(0)
+            if node.left is None and node.right is None:
+                return min_depth
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
 
     """
     Converting a tree into a doubly linked list
@@ -540,17 +549,190 @@ class BinarySearchTree:
             return self.is_bst(root.left, min, root.data) and \
                 self.is_bst(root.right, root.data, max)
 
-    # space complexity O(n)
-    def bst(self, root):
-        global prev
+    # All Paths with a sum of s
+    def finding_paths(self, root, s, curr_path, all_paths, curr_sum):
         if root is None:
+            return
+
+        curr_path.append(root.data)
+        curr_sum += root.data
+        if curr_sum == s and root.left is None and root.right is None:
+            all_paths.append(list(curr_path))
+        # print(curr_path, curr_sum)
+        self.finding_paths(root.left, s,
+                           curr_path, all_paths, curr_sum)
+        self.finding_paths(root.right, s,
+                           curr_path, all_paths, curr_sum)
+        del curr_path[-1]
+        return all_paths
+
+    def find_paths(self, root, s):
+        all_paths = []
+        return self.finding_paths(root, s, [], all_paths, 0)
+
+# ==============================================================================
+
+    # Sum of Path numbers
+    def find_sum(self, root, curr_sum):
+        if root is None:
+            return 0
+        curr_sum = 10 * curr_sum + root.val
+        print(curr_sum)
+        if root.left is None and root.right is None:
+            return curr_sum
+        return self.find_sum(root.left, curr_sum) + self.find_sum(root.right, curr_sum)
+
+    def find_sum_of_path_numbers(self, root):
+        return self.find_sum(root, 0)
+# =======================================================================================
+
+    # Path With a Given Sequence
+    # 0(n) space complexity
+    def find_path_rec(self, root, sequence, curr_path, all_paths):
+        if root is None:
+            return False
+
+        curr_path.append(root.data)
+        if root.left is None and root.right is None:
+            all_paths.append(list(curr_path))
+
+        self.find_path_rec(root.left, sequence, curr_path, all_paths)
+        self.find_path_rec(root.right, sequence, curr_path, all_paths)
+        del curr_path[-1]
+        if sequence in all_paths:
             return True
-        if not self.bst(root.left):
+
+        return False
+
+    def find_path(self, root, sequence):
+        return self.find_path_rec(root, sequence, [], [])
+
+    # O(1) space complexity
+
+    def find_seq_path(self, root, sequence):
+        if not root:
+            return len(sequence) == 0
+
+        return self.find_seq_path_recursive(root, sequence, 0)
+
+    def find_seq_path_recursive(self, root, sequence, index):
+        if root is None:
             return False
-        elif prev and root.data < prev.data:
+
+        if index >= len(sequence) or root.data != sequence[index]:
             return False
-        prev = root
-        return self.bst(root.right)
+        # if the current node is a leaf, add it as the end of the sequence, we have found a path!
+        if root.left is None and root.right is None and index == len(sequence) - 1:
+            return True
+        # recursively call to traverse the left and right sub-tree
+        # return true if any of the two recursive call return true
+        return self.find_seq_path_recursive(root.left, sequence, index + 1) or \
+            self.find_seq_path_recursive(
+                root.right, sequence, index + 1)
+
+# ========================================================================
+
+    # O(n) space complexity
+    def count_paths_rec(self, root, S, curr_path):
+        if root is None:
+            return 0
+
+        curr_path.append(root.val)
+        path_sum, total_count = 0, 0
+        for i in range(len(curr_path) - 1, -1, -1):
+            path_sum += curr_path[i]
+            if path_sum == S:
+                total_count += 1
+
+        total_count += self.count_paths_rec(root.left, S, curr_path)
+        total_count += self.count_paths_rec(root.right, S, curr_path)
+        del curr_path[-1]
+        return total_count
+
+    def count_paths(self, root, S):
+        return self.count_paths_rec(root, S, [])
+
+# ================================================================================
+
+
+# Find the Median of a Number Stream (Heap Queues)
+
+
+class MedianStream:
+    def __init__(self):
+        self.max_heap = []
+        self.min_heap = []
+
+    def insert_num(self, num):
+        if not self.max_heap or num <= -self.max_heap[0]:
+            # use negative value for max heap because heappop removes and returns the lowest heap value in a list
+            heappush(self.max_heap, -num)
+        else:
+            heappush(self.min_heap, num)
+
+        if len(self.max_heap) > len(self.min_heap) + 1:
+            heappush(self.min_heap, -heappop(self.max_heap))
+        elif len(self.max_heap) < len(self.min_heap):
+            heappush(self.max_heap, -heappop(self.min_heap))
+
+    def find_median(self):
+        if len(self.max_heap) == len(self.min_heap):
+            med = (-self.max_heap[0] + self.min_heap[0]) / 2
+            return med
+        return float(-self.max_heap[0])
+
+
+class SlidingWindowMedian:
+    def __init__(self):
+        self.max_heap = []
+        self.min_heap = []
+
+    def find_sliding_window_median(self, nums, k):
+        result = []
+        for i in range(len(nums)):
+            if not self.max_heap or nums[i] <= -self.max_heap[0]:
+                heappush(self.max_heap, -nums[i])
+            else:
+                heappush(self.min_heap, nums[i])
+            self.rebalance_heaps()
+            # if we have at least 'k' elements in the sliding window
+            if i - k + 1 >= 0:
+                # if k is even
+                if k % 2 == 0:
+                    med = (-self.max_heap[0] + self.min_heap[0]) / 2
+                    result.append(med)
+                # if k is odd
+                else:
+                    med = float(-self.max_heap[0])
+                    result.append(med)
+                # remove the element going out of the sliding window
+                removed_element = nums[i - k + 1]
+                if removed_element <= -self.max_heap[0]:
+                    self.remove_heap(self.max_heap, -removed_element)
+                else:
+                    self.remove_heap(self.min_heap, removed_element)
+                self.rebalance_heaps()
+        return result
+
+        """
+        either both the heaps will have equal number of elements 
+        or max-heap will have one more element than the min-heap
+        """
+
+    def rebalance_heaps(self):
+        if len(self.max_heap) > len(self.min_heap) + 1:
+            heappush(self.min_heap, -heappop(self.max_heap))
+        elif len(self.max_heap) < len(self.min_heap):
+            heappush(self.max_heap, -heappop(self.min_heap))
+
+    def remove_heap(self, heap_list, removed_element):
+        index = heap_list.index(removed_element)
+        # delete element from list
+        del heap_list[index]
+        # adjust only one element which will O(logN)
+        if index < len(heap_list):
+            _siftup(heap_list, index)
+            _siftdown(heap_list, 0, index)
 
 
 class InorderIterator:
