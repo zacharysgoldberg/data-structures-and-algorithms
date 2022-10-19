@@ -684,33 +684,33 @@ class MedianStream:
 
 class SlidingWindowMedian:
     def __init__(self):
-        self.max_heap = []
-        self.min_heap = []
+        self.max_heaps = []
+        self.min_heaps = []
 
     def find_sliding_window_median(self, nums, k):
         result = []
         for i in range(len(nums)):
-            if not self.max_heap or nums[i] <= -self.max_heap[0]:
-                heappush(self.max_heap, -nums[i])
+            if not self.max_heaps or nums[i] <= -self.max_heaps[0]:
+                heappush(self.max_heaps, -nums[i])
             else:
-                heappush(self.min_heap, nums[i])
+                heappush(self.min_heaps, nums[i])
             self.rebalance_heaps()
             # if we have at least 'k' elements in the sliding window
             if i - k + 1 >= 0:
                 # if k is even
                 if k % 2 == 0:
-                    med = (-self.max_heap[0] + self.min_heap[0]) / 2
+                    med = (-self.max_heaps[0] + self.min_heaps[0]) / 2
                     result.append(med)
                 # if k is odd
                 else:
-                    med = float(-self.max_heap[0])
+                    med = float(-self.max_heaps[0])
                     result.append(med)
                 # remove the element going out of the sliding window
-                removed_element = nums[i - k + 1]
-                if removed_element <= -self.max_heap[0]:
-                    self.remove_heap(self.max_heap, -removed_element)
+                heap = nums[i - k + 1]
+                if heap <= -self.max_heaps[0]:
+                    self.remove_heap(self.max_heaps, -heap)
                 else:
-                    self.remove_heap(self.min_heap, removed_element)
+                    self.remove_heap(self.min_heaps, heap)
                 self.rebalance_heaps()
         return result
 
@@ -720,19 +720,33 @@ class SlidingWindowMedian:
         """
 
     def rebalance_heaps(self):
-        if len(self.max_heap) > len(self.min_heap) + 1:
-            heappush(self.min_heap, -heappop(self.max_heap))
-        elif len(self.max_heap) < len(self.min_heap):
-            heappush(self.max_heap, -heappop(self.min_heap))
+        if len(self.max_heaps) > len(self.min_heaps) + 1:
+            heappush(self.min_heaps, -heappop(self.max_heaps))
+        elif len(self.max_heaps) < len(self.min_heaps):
+            heappush(self.max_heaps, -heappop(self.min_heaps))
 
-    def remove_heap(self, heap_list, removed_element):
-        index = heap_list.index(removed_element)
+    def remove_heap(self, heap_list, heap):
+        index = heap_list.index(heap)
         # delete element from list
         del heap_list[index]
         # adjust only one element which will O(logN)
         if index < len(heap_list):
             _siftup(heap_list, index)
             _siftdown(heap_list, 0, index)
+
+    # Maximize Capital
+    def find_maximum_capital(self, capital, profits, number_of_projects, initial_capital):
+        for i in range(len(profits)):
+            heappush(self.min_heaps, (capital[i], i))
+
+        for _ in range(number_of_projects):
+            while self.min_heaps and self.min_heaps[0][0] <= initial_capital:
+                capital, i = heappop(self.min_heaps)
+                heappush(self.max_heaps, -profits[i])
+
+            initial_capital += -heappop(self.max_heaps)
+
+        return initial_capital
 
 
 class InorderIterator:
@@ -749,6 +763,7 @@ class InorderIterator:
         if not self.stack:
             return False
         return True
+
     # getNext returns null if there are no more elements in tree
 
     def get_next(self):
