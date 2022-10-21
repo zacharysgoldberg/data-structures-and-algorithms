@@ -34,17 +34,6 @@ class LinkedList:
             first_element.next_element = None
         return
 
-    def print_linked_list(self, head):
-        # curr = head
-        # while curr:
-        #     print(curr.data)
-        #     curr = curr.next
-
-        # [recursive]
-        if head:
-            print(head.data)
-            self.print_linked_list(head.next)
-
     def insert_node_at_head(self, head, data):
         new_node = Node(data)
         new_node.next = head
@@ -130,20 +119,6 @@ class LinkedList:
             self.insert_node_at_position(head.next, data, position - 1)
         return head
 
-    def delete_node(self, head, position):
-        curr = head
-        index = 0
-        if position == 0:
-            head = head.next
-            return head
-
-        while index < position - 1:
-            curr = curr.next
-            index += 1
-        print(curr.next.data)
-        curr.next = curr.next.next
-        return head
-
     def reverse_print_linked_list(self, head):
         if head:
             self.reverse_print_linked_list(head.next)
@@ -151,13 +126,13 @@ class LinkedList:
 
     def reverse(self, lst):
         prev = None
-        curr = lst.get_head()
+        curr = lst
         while curr:
             next = curr.next_element
             curr.next_element = prev
             prev = curr
             curr = next
-            lst.head_node = prev
+            lst = prev
 
         return lst
 
@@ -261,3 +236,59 @@ class LinkedList:
                 res.append(curr2.data)
             curr2 = curr2.next_element
         return res
+
+
+def print_linked_list(head):
+    # curr = head
+    # while curr:
+    #     print(curr.data)
+    #     curr = curr.next
+
+    # [recursive]
+    if head:
+        print(head.data)
+        print_linked_list(head.next)
+
+
+def delete_node(head, data):
+    curr = head
+    prev = None
+    while curr:
+        if curr.data == data:
+            if curr == head:
+                head = head.next
+                curr = head
+            else:
+                prev.next = curr.next
+                curr = curr.next
+        else:
+            prev = curr
+            curr = curr.next
+
+
+def delete_node_at_pos(head, position):
+    curr = head
+    index = 0
+    if position == 0:
+        head = head.next
+        return head
+    while index < position - 1:
+        curr = curr.next
+        index += 1
+    curr.next = curr.next.next
+
+
+if __name__ == '__main__':
+    lst = LinkedList()
+    lst.append(1)
+    lst.append(2)
+    lst.append(3)
+    lst.append(5)
+    lst.append(8)
+    print_linked_list(lst.head)
+    delete_node_at_pos(lst.head, 2)
+    print("========================")
+    print_linked_list(lst.head)
+    delete_node(lst.head, 5)
+    print("========================")
+    print_linked_list(lst.head)

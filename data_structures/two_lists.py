@@ -2,19 +2,15 @@ from helpers import Node, DoubleNode, LinkedList, DoublyLinkedList
 
 
 def compare_lists(head1, head2):
-    lst1 = head1
-    lst2 = head2
-    while lst1 and lst2:
-        if lst1.data != lst2.data:
-            return 0
+    while head1 and head2:
+        if head1.data != head2.data:
+            return False
+        head1 = head1.next
+        head2 = head2.next
 
-        lst1 = lst1.next
-        lst2 = lst2.next
-
-    if lst1 or lst2:
-        return 0
-
-    return 1
+    if head1 or head2:
+        return False
+    return True
 
 
 def merge_linked_lists(head1, head2):

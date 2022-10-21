@@ -432,36 +432,9 @@ class BinarySearchTree:
         for data in sorted(viewable):
             print(viewable[data], end=" ")
 
-    def insert(self, root, val):
-        # new_node = BSTNode(val)
-        # if not root:
-        #     root = new_node
-        #     return root
-        # root = self.root
-        # while root:
-        #     if root.info > val:
-        #         if root.left:
-        #             root = root.left
-        #         else:
-        #             root.left = new_node
-        #             break
-        #     else:
-        #         if root.right:
-        #             root = root.right
-        #         else:
-        #             root.right = new_node
-        #             break
-        # [for recursion]
-        if not root:
-            root = BSTNode(val)
-        else:
-            self.insertion(root, val)
-
-        return root
-
     # [for recursion]
-    def insertion(self, cur, val):
-        if not cur:
+    def insertion(self, curr, val):
+        if not curr:
             curr = BSTNode(val)
         elif curr.info > val:
             curr.left = self.insertion(curr.left, val)
@@ -520,7 +493,7 @@ class BinarySearchTree:
 
     def tree_height(self, root):
         if root is None:
-            return 0
+            return -1
         left_height = self.tree_height(root.left)
         right_height = self.tree_height(root.right)
         return 1 + max(left_height, right_height)

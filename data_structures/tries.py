@@ -72,7 +72,6 @@ class Trie:
             child_node = current.children[index]
             child_deleted = self.delete_helper(
                 key, child_node, length, level + 1)
-            # print( "Returned from", key[level] , "as",  child_deleted)
             if child_deleted:
                 # Setting children pointer to None as child is deleted
                 current.children[index] = None
@@ -109,7 +108,65 @@ def total_words(root):
     if root.is_end_word:
         result += 1
     for letter in root.children:
+        print(result)
         if letter:
             result += total_words(letter)
 
     return result
+
+# Get all words in a Trie, sorted
+
+
+def find_words(root):
+    result = []
+    key = [''] * 15
+    find_words_helper(root, result, 0, key)
+    return result
+
+
+def find_words_helper(root, result, level, key):
+    if root.is_end_word:
+        word = ""
+        for i in range(level):
+            word += key[i]
+        result.append(word)
+    for i in range(len(root.children)):
+        if root.children[i]:
+            key[level] = chr(i + ord('a'))
+            find_words_helper(root.children[i], result, level + 1, key)
+
+    return result
+
+
+def sort_list(arr):
+    trie = Trie()
+    for word in arr:
+        trie.insert(word)
+
+    result = []
+    key = [""] * 15
+    find_words_helper(trie.root, result, 0, key)
+    return result
+
+#  Word Formation From a Dictionary
+
+
+def is_formation_possible(lst, word):
+    trie = Trie()
+    for el in lst:
+        trie.insert(el)
+    curr = trie.root
+    for i in range(len(word)):
+        index = trie.root.get_index([word[i]])
+        if curr.children[index] is None:
+            return False
+        elif curr.children[index].is_end_word:
+            if trie.search(word[i + 1:]):
+                return True
+        curr = curr.children[index]
+
+    return False
+
+
+if __name__ == "__main__":
+    pass
