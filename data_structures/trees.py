@@ -688,7 +688,7 @@ class SlidingWindowMedian:
         return result
 
         """
-        either both the heaps will have equal number of elements 
+        either both the heaps will have equal number of elements
         or max-heap will have one more element than the min-heap
         """
 
@@ -761,6 +761,13 @@ def display_tree_perimeter(root):
     return "".join(left)
 
 
+def invert_bst(root):
+    if root is None:
+        return None
+    root.left, root.right = invert_bst(root.right), invert_bst(root.left)
+    return root
+
+
 if __name__ == "__main__":
     tree1 = BSTNode(100)
     tree1.left = BSTNode(50)
@@ -778,5 +785,7 @@ if __name__ == "__main__":
     # tree2.right = BSTNode(200)
     # tree2.right.left = BSTNode(150)
     # tree2.right.right = BSTNode(350)
-
-    print(BinarySearchTree().bst(tree1))
+    BinarySearchTree().inorder(tree1)
+    invert_bst(tree1)
+    print()
+    BinarySearchTree().inorder(tree1)
