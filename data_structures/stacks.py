@@ -1,26 +1,26 @@
 class MyStack:
     def __init__(self):
-        self.stack_list = []
+        self.items = []
         # self.stack_size = 0
 
     def is_empty(self):
-        return len(self.stack_list) == 0
+        return len(self.items) == 0
 
     def peek(self):
         if self.is_empty():
             return None
-        return self.stack_list[-1]
+        return self.items[-1]
 
     def size(self):
-        return len(self.stack_list)
+        return len(self.items)
 
     def push(self, value):
-        self.stack_list.append(value)
+        self.items.append(value)
 
     def pop(self):
         if self.is_empty():
             return None
-        return self.stack_list.pop()
+        return self.items.pop()
 
 
 class MinStack:
@@ -42,6 +42,6 @@ class MinStack:
     # Returns minimum value from new stack in constant time
     def min(self):
         if self.main_stack:
-            self.min_stack.push(min(self.main_stack.stack_list))
+            self.min_stack.push(min(self.main_stack.items))
             return self.min_stack.peek()
         return None

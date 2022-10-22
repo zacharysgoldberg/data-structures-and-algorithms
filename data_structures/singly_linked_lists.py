@@ -57,10 +57,10 @@ class LinkedList:
             lst.head_node = node
             return
 
-        temp = lst.head
-        while temp.next_element:
-            temp = temp.next_element
-        temp.next_element = node
+        head = lst.head
+        while head.next_element:
+            head = head.next_element
+        head.next_element = node
         return lst
 
     def search(self, lst, data):
@@ -253,14 +253,15 @@ def print_linked_list(head):
 def delete_node(head, data):
     curr = head
     prev = None
+    if head is None:
+        return None
+    elif curr.data == data:
+        head = head.next_element
+        return head
     while curr:
         if curr.data == data:
-            if curr == head:
-                head = head.next
-                curr = head
-            else:
-                prev.next = curr.next
-                curr = curr.next
+            prev.next = curr.next
+            curr = curr.next
         else:
             prev = curr
             curr = curr.next

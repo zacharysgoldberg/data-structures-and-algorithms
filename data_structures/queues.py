@@ -30,23 +30,38 @@ class MyQueue:
     def dequeue(self):
         return self.items.remove_head()
 
-    def reverse_k(self, queue, k):
-        # Handling invalid input
-        if queue.is_empty() is True or k > queue.size() or k < 0:
-            return None
-        stack = MyStack()
-        for i in range(k):
-            stack.push(queue.dequeue())
-        while stack.is_empty() is False:
-            queue.enqueue(stack.pop())
-        size = queue.size()
-        for i in range(size - k):
-            queue.enqueue(queue.dequeue())
-
-        return queue
-
     def print_list(self):
         return self.items.__str__()
+
+
+def reverse_k(queue, k):
+    # Handling invalid input
+    if queue.is_empty() is True or k > queue.size() or k < 0:
+        return None
+    stack = MyStack()
+    for _ in range(k):
+        stack.push(queue.dequeue())
+    while stack.is_empty() is False:
+        queue.enqueue(stack.pop())
+    size = queue.size()
+    for _ in range(size - k):
+        queue.enqueue(queue.dequeue())
+
+    return queue
+
+
+def truckTour(petrolpumps):
+    optimal = 0
+    sum = 0
+    for i in range(len(petrolpumps)):
+        n, dist = petrolpumps[i]
+        sum += n - dist
+        # if sum goes below 0 then any index after is sufficient to make the tour
+        if sum < 0:
+            sum = 0
+            optimal = i + 1
+
+    return optimal
 
 
 # [Using Stacks]
@@ -66,11 +81,10 @@ class NewQueue:
     def dequeue(self):
         if self.main_stack.is_empty() and self.temp_stack.is_empty():
             return None
+        self.temp_stack.push(self.main_stack.items.pop(0))
 
-        while not self.main_stack.is_empty():
-            value = self.main_stack.pop()
-            self.temp_stack.push(value)
-        return self.temp_stack.pop()
+    def head_of_queue(self):
+        return self.main_stack.items[0]
 
 
 queue_obj = MyQueue()
