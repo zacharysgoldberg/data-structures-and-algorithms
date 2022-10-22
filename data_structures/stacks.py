@@ -45,3 +45,17 @@ class MinStack:
             self.min_stack.push(min(self.main_stack.items))
             return self.min_stack.peek()
         return None
+
+
+def getMax(operations):
+    items = [0]
+    max_elements = []
+    for i in range(len(operations)):
+        nums = list(map(int, operations[i].split()))
+        if nums[0] == 1:
+            items.append(max(nums[1], items[-1]))
+        elif nums[0] == 2:
+            items.pop()
+        else:
+            max_elements.append(items[-1])
+    return max_elements
