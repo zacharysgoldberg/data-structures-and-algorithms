@@ -128,8 +128,8 @@ class BinarySearchTree:
     def level_order(self, root):
         nodes = [root]
         while nodes:
-            print(str(nodes[0].data) + " ", end="")
             node = nodes.pop(0)
+            print(str(node.data) + " ", end="")
             if node.left:
                 nodes.append(node.left)
             if node.right:
@@ -261,15 +261,14 @@ class BinarySearchTree:
         self.leaf_nodes(root.left, result)
         self.leaf_nodes(root.right, result)
         self.right_perimeter(root, result)
-        result.pop()
+        del result[-1]
         return " ".join(map(str, result))
 
     def leaf_nodes(self, root, result):
         if root:
-            self.leaf_nodes(root.left, result)
             if root.left is None and root.right is None:
                 result.append(root.data)
-
+            self.leaf_nodes(root.left, result)
             self.leaf_nodes(root.right, result)
 
     def left_perimeter(self, root, result):
