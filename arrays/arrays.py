@@ -253,3 +253,26 @@ def array_manipulation(n, queries):
 
 
 # print(array_manipulation(4, [[2, 3, 603], [1, 1, 286], [4, 4, 882]]))
+
+
+def find_product(lst):
+    products = []
+    ########## [O(n^2)] ##########
+    # for i in range(len(lst)):
+    #     product = 1
+    #     for j in range(len(lst)):
+    #         if i != j:
+    #             product = product * lst[j]
+    #     products.append(product)
+    # return products
+
+    ########## [0(n)] ###########
+    product = 1
+    for i in range(len(lst)):
+        products.append(product)
+        product = product * lst[i]
+    product = 1
+    for i in range(len(lst) - 1, -1, -1):
+        products[i] = products[i] * product
+        product = product * lst[i]
+    return products
