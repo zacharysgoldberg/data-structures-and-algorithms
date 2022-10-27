@@ -22,3 +22,9 @@ class TrieNode:
         self.children = [None] * 26  # This will store pointers to the children
         self.is_end_word = False  # true if the node represents the end of word
         self.char = char  # To store the value of a particular key
+
+
+class AdjNode:
+    def __init__(self, data):
+        self.vertex = data
+        self.next = None

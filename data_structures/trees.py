@@ -217,21 +217,36 @@ class BinarySearchTree:
                 if node.right:
                     nodes.append(node.right)
 
-    def find_minimum_depth(self, root):
+    def find_min_depth(self, root):
+        depth = 0
         if root is None:
-            return 0
-        stack = [root]
-        min_depth = 0
-        while stack:
-            min_depth += 1
-            for _ in range(len(stack)):
-                node = stack.pop(0)
-            if node.left is None and node.right is None:
-                return min_depth
+            return depth
+        nodes = deque([root])
+        while nodes:
+            depth += 1
+            for _ in range(len(nodes)):
+                node = nodes.popleft()
             if node.left:
-                stack.append(node.left)
+                nodes.append(node.left)
             if node.right:
-                stack.append(node.right)
+                nodes.append(node.right)
+            elif not node.left and not node.right:
+                return depth
+
+    def find_max_depth(self, root):
+        depth = 0
+        if root is None:
+            return depth
+        nodes = deque([root])
+        while nodes:
+            depth += 1
+            for _ in range(len(nodes)):
+                node = nodes.popleft()
+                if node.left:
+                    nodes.append(node.left)
+                if node.right:
+                    nodes.append(node.right)
+        return depth
 
     """
     Converting a tree into a doubly linked list
@@ -358,26 +373,29 @@ class BinarySearchTree:
         root.right = temp
         return root
 
-# [ Delete Zero Sum Sub Tree]
+    # preorder
+    def mirror_tree_rec(self, root):
+        if root is None:
+            return None
+        if root.left:
+            root.left, root.right = root.right, root.left
+            self.mirror_tree_rec(root.left)
+        self.mirror_tree_rec(root.right)
 
-    def helper(self, root):
+    # [ Delete Zero Sum Sub Tree]
+
+    def delete_zero_sum_subtree(self, root):
         if root is None:
             return 0
-        sum_left = self.helper(root.left)
-        sum_right = self.helper(root.right)
+        sum_left = self.delete_zero_sum_subtree(root.left)
+        sum_right = self.delete_zero_sum_subtree(root.right)
         if sum_left == 0:
             root.left = None
         if sum_right == 0:
             root.right = None
         return root.data + sum_left + sum_right
 
-    def delete_zero_sum_subtree(self, root):
-        if root:
-            zero_sum = self.helper(root)
-            if zero_sum == 0:
-                root = None
-        return
-# Convert binary tree to n ary
+    # Convert binary tree to n ary
 
     def convert_n_ary_to_binary(self, node):
         return self.convert_to_binary(node, 'left')
@@ -522,25 +540,20 @@ class BinarySearchTree:
                 self.is_bst(root.right, root.data, max)
 
     # All Paths with a sum of s
-    def finding_paths(self, root, s, curr_path, all_paths, curr_sum):
+    def find_paths_rec(self, root, s, curr_path, all_paths):
         if root is None:
-            return
-
+            return None
         curr_path.append(root.data)
-        curr_sum += root.data
-        if curr_sum == s and root.left is None and root.right is None:
+        if sum(curr_path) == s and root.left is None and root.right is None:
             all_paths.append(list(curr_path))
-        # print(curr_path, curr_sum)
-        self.finding_paths(root.left, s,
-                           curr_path, all_paths, curr_sum)
-        self.finding_paths(root.right, s,
-                           curr_path, all_paths, curr_sum)
+        self.find_paths_rec(root.left, s, curr_path, all_paths)
+        self.find_paths_rec(root.right, s, curr_path, all_paths)
         del curr_path[-1]
         return all_paths
 
     def find_paths(self, root, s):
         all_paths = []
-        return self.finding_paths(root, s, [], all_paths, 0)
+        return self.find_paths_rec(root, s, [], all_paths)
 
 # ==============================================================================
 
@@ -549,7 +562,6 @@ class BinarySearchTree:
         if root is None:
             return 0
         curr_sum = 10 * curr_sum + root.val
-        print(curr_sum)
         if root.left is None and root.right is None:
             return curr_sum
         return self.find_sum(root.left, curr_sum) + self.find_sum(root.right, curr_sum)
@@ -608,18 +620,16 @@ class BinarySearchTree:
     def count_paths_rec(self, root, S, curr_path):
         if root is None:
             return 0
-
         curr_path.append(root.val)
-        path_sum, total_count = 0, 0
+        path_sum, path_count = 0, 0
         for i in range(len(curr_path) - 1, -1, -1):
             path_sum += curr_path[i]
             if path_sum == S:
-                total_count += 1
-
-        total_count += self.count_paths_rec(root.left, S, curr_path)
-        total_count += self.count_paths_rec(root.right, S, curr_path)
+                path_count += 1
+        path_count += self.count_paths_rec(root.left, S, curr_path)
+        path_count += self.count_paths_rec(root.right, S, curr_path)
         del curr_path[-1]
-        return total_count
+        return path_count
 
     def count_paths(self, root, S):
         return self.count_paths_rec(root, S, [])
@@ -641,17 +651,19 @@ class MedianStream:
             heappush(self.max_heap, -num)
         else:
             heappush(self.min_heap, num)
-
-        if len(self.max_heap) > len(self.min_heap) + 1:
-            heappush(self.min_heap, -heappop(self.max_heap))
-        elif len(self.max_heap) < len(self.min_heap):
-            heappush(self.max_heap, -heappop(self.min_heap))
+        self.rebalance_heaps()
 
     def find_median(self):
         if len(self.max_heap) == len(self.min_heap):
             med = (-self.max_heap[0] + self.min_heap[0]) / 2
             return med
         return float(-self.max_heap[0])
+
+    def rebalance_heaps(self):
+        if len(self.max_heap) > len(self.min_heap) + 1:
+            heappush(self.min_heap, -heappop(self.max_heap))
+        elif len(self.max_heap) < len(self.min_heap):
+            heappush(self.max_heap, -heappop(self.min_heap))
 
 
 class SlidingWindowMedian:
@@ -701,21 +713,24 @@ class SlidingWindowMedian:
         index = heap_list.index(heap)
         # delete element from list
         del heap_list[index]
-        # adjust only one element which will O(logN)
-        if index < len(heap_list):
-            _siftup(heap_list, index)
-            _siftdown(heap_list, 0, index)
+        # # adjust only one element which will be O(logN)
+        # if index < len(heap_list):
+        #     _siftup(heap_list, index)
+        #     _siftdown(heap_list, 0, index)
 
     # Maximize Capital
     def find_maximum_capital(self, capital, profits, number_of_projects, initial_capital):
+        # insert all project capitals to a min-heap
         for i in range(len(profits)):
             heappush(self.min_heaps, (capital[i], i))
-
+        # find projects that can be selected within available capital and insert them in a max-heap
         for _ in range(number_of_projects):
             while self.min_heaps and self.min_heaps[0][0] <= initial_capital:
                 capital, i = heappop(self.min_heaps)
                 heappush(self.max_heaps, -profits[i])
-
+            if not self.max_heaps:
+                break
+            # select the project with the maximum profit
             initial_capital += -heappop(self.max_heaps)
 
         return initial_capital
