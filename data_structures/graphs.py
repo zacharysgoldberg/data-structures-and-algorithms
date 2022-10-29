@@ -156,6 +156,8 @@ def find_mother_vertex_helper(g, source, visited):
         adjacent = adjacent.next
 
 
+# DFS
+
 def check_path(g, source, destination):
     visited = [False] * g.vertices
     check_path_rec(g, source, destination, visited)
@@ -172,21 +174,51 @@ def check_path_rec(g, source, destination, visited):
             check_path_rec(g, adjacent.data, destination, visited)
         adjacent = adjacent.next
 
+# BFS
+
+
+def find_min_path(g, source, destination):
+    visited = [False] * g.vertices
+    visited[source] = True
+    queue = [source]
+    distance = [0] * g.vertices
+    while queue:
+        node = queue.pop(0)
+        adjacent = g.graph[node].head
+        while adjacent:
+            if visited[adjacent.data] is False or adjacent.data == destination:
+                queue.append(adjacent.data)
+                visited[adjacent.data] = True
+                distance[adjacent.data] = distance[node] + 1
+                if adjacent.data == destination:
+                    return distance[destination]
+            adjacent = adjacent.next
+    return None
+
 
 if __name__ == "__main__":
-    g = Graph(4)
+    # g = Graph(4)
 
-    g.add_edge(0, 1)
-    g.add_edge(0, 2)
-    g.add_edge(1, 3)
-    g.add_edge(2, 3)
+    # g.add_edge(0, 1)
+    # g.add_edge(0, 2)
+    # g.add_edge(1, 3)
+    # g.add_edge(2, 3)
 
     # g.add_edge(0, 1)
     # g.add_edge(1, 2)
     # g.add_edge(3, 0)
     # g.add_edge(3, 1)
 
+    g = Graph(7)
+    g.add_edge(1, 2)
+    g.add_edge(1, 3)
+    g.add_edge(2, 4)
+    g.add_edge(4, 5)
+    g.add_edge(2, 5)
+    g.add_edge(5, 6)
+    g.add_edge(3, 6)
+
     print(g.print_graph())
-    print(bfs_traversal(g, 0))
-    print(dfs_traversal(g, 1))
-    print(find_mother_vertex(g))
+    # print(bfs_traversal(g, 0))
+    # print(dfs_traversal(g, 1))
+    print(find_min_path(g, 1, 5))
