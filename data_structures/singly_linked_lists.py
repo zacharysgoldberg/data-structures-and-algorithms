@@ -34,10 +34,14 @@ class LinkedList:
             first_element.next_element = None
         return
 
-    def insert_node_at_head(self, head, data):
-        new_node = Node(data)
-        new_node.next = head
-        return new_node
+    def insert_node_at_head(self, data):
+        node = Node(data)
+        if self.head is None:
+            self.head = node
+            return self.head
+        node.next = self.head
+        self.head = node
+        return node
 
     # [recursive]
 
