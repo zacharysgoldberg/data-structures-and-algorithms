@@ -1,6 +1,6 @@
-import re
 from helpers import AdjNode
 from singly_linked_lists import LinkedList
+from collections import deque
 
 
 class Graph:
@@ -196,29 +196,49 @@ def find_min_path(g, source, destination):
     return None
 
 
-if __name__ == "__main__":
-    # g = Graph(4)
+def number_of_nodes(g, level):
+    visited = [0] * g.vertices
+    queue = deque([0])
+    visited[0] = 1
+    while queue:
+        node = queue.popleft()
+        adjacent = g.graph[node].head
+        while adjacent:
+            if visited[adjacent.data] == 0:
+                queue.append(adjacent.data)
+                # while visiting each node, the level of that node is set with an increment in the level of its parent node
+                # This is how the level of each node is determined
+                visited[adjacent.data] = visited[node] + 1
+            adjacent = adjacent.next
+    count = 0
+    for i in range(g.vertices):
+        if visited[i] == level:
+            count += 1
+    return count
 
-    # g.add_edge(0, 1)
-    # g.add_edge(0, 2)
-    # g.add_edge(1, 3)
-    # g.add_edge(2, 3)
+
+if __name__ == "__main__":
+    g = Graph(4)
+
+    g.add_edge(0, 1)
+    g.add_edge(0, 2)
+    g.add_edge(1, 3)
+    g.add_edge(2, 3)
 
     # g.add_edge(0, 1)
     # g.add_edge(1, 2)
     # g.add_edge(3, 0)
     # g.add_edge(3, 1)
 
-    g = Graph(7)
-    g.add_edge(1, 2)
-    g.add_edge(1, 3)
-    g.add_edge(2, 4)
-    g.add_edge(4, 5)
-    g.add_edge(2, 5)
-    g.add_edge(5, 6)
-    g.add_edge(3, 6)
+    # g = Graph(7)
+    # g.add_edge(1, 2)
+    # g.add_edge(1, 3)
+    # g.add_edge(2, 4)
+    # g.add_edge(4, 5)
+    # g.add_edge(2, 5)
+    # g.add_edge(5, 6)
+    # g.add_edge(3, 6)
 
     print(g.print_graph())
     # print(bfs_traversal(g, 0))
     # print(dfs_traversal(g, 1))
-    print(find_min_path(g, 1, 5))
