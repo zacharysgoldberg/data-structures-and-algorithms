@@ -6,19 +6,30 @@ from collections import deque
 class Graph:
     def __init__(self, vertices):
         self.vertices = vertices
-        self.graph = []
-        for i in range(vertices):
-            self.graph.append(LinkedList())
+        self.graph = [None] * self.vertices
+        self.array = [LinkedList() for _ in range(self.vertices)]
+
+    def add_edge_lst(self, source, destination):
+        if source < self.vertices and destination < self.vertices:
+            self.array[source].insert_node_at_head(destination)
 
     def add_edge(self, source, destination):
-        if source < self.vertices and destination < self.vertices:
-            self.graph[source].insert_node_at_head(destination)
+        node = AdjNode(destination)
+        node.next = self.graph[source]
+        self.graph[source] = node
+
+    def print_graph_lst(self):
+        for i in range(self.vertices):
+            temp = self.array[i].head
+            while temp:
+                print(temp.data, end=" -> ")
+                temp = temp.next
 
     def print_graph(self):
         for i in range(self.vertices):
-            temp = self.graph[i].head
+            temp = self.graph[i]
             while temp:
-                print(temp.data, end=" -> ")
+                print(temp.vertex, end=" -> ")
                 temp = temp.next
 
 
@@ -29,7 +40,7 @@ def bfs_helper(g, source, visited):
     while queue:
         s = queue.pop(0)
         result += str(s)
-        adjacent = g.graph[s].head
+        adjacent = g.array[s].head
         while adjacent:
             if visited[adjacent.data] is False:
                 queue.append(adjacent.data)
@@ -59,7 +70,7 @@ def dfs_helper(g, source, visited):
     while stack:
         node = stack.pop()
         result += str(node)
-        adjacent = g.graph[node].head
+        adjacent = g.array[node].head
         while adjacent:
             if visited[adjacent.data] is False:
                 stack.append(adjacent.data)
@@ -93,7 +104,7 @@ def detect_cycle(g):
 
 def detect_cycle_rec(g, curr, visited, parent):
     visited[curr] = True
-    adjacent = g.graph[curr].head
+    adjacent = g.array[curr].head
     while adjacent:
         if visited[adjacent.data] is False:
             if detect_cycle_rec(g, adjacent.data, visited, curr):
@@ -119,7 +130,7 @@ def is_tree(g):
 
 def check_cycle(g, curr, visited, parent):
     visited[curr] = True
-    adjacent = g.graph[curr].head
+    adjacent = g.array[curr].head
     while adjacent:
         if visited[adjacent.data] is False:
             if check_cycle(g, adjacent.data, visited, curr):
@@ -149,7 +160,7 @@ def find_mother_vertex(g):
 
 def find_mother_vertex_helper(g, source, visited):
     visited[source] = True
-    adjacent = g.graph[source].head
+    adjacent = g.array[source].head
     while adjacent:
         if visited[adjacent.data] is False:
             find_mother_vertex_helper(g, adjacent.data, visited)
@@ -168,7 +179,7 @@ def check_path(g, source, destination):
 
 def check_path_rec(g, source, destination, visited):
     visited[source] = True
-    adjacent = g.graph[source].head
+    adjacent = g.array[source].head
     while adjacent:
         if visited[adjacent.data] is False:
             check_path_rec(g, adjacent.data, destination, visited)
@@ -184,7 +195,7 @@ def find_min_path(g, source, destination):
     distance = [0] * g.vertices
     while queue:
         node = queue.pop(0)
-        adjacent = g.graph[node].head
+        adjacent = g.array[node].head
         while adjacent:
             if visited[adjacent.data] is False or adjacent.data == destination:
                 queue.append(adjacent.data)
@@ -217,18 +228,30 @@ def number_of_nodes(g, level):
     return count
 
 
+def transpose(g):
+    new_graph = Graph(g.vertices)  # Creating a new graph
+    for source in range(g.vertices):
+        while g.graph[source]:
+            destination = g.graph[source].vertex
+            # swap destination and source (transpose)
+            new_graph.add_edge(destination, source)
+            g.graph[source] = g.graph[source].next
+
+    return new_graph
+
+
 if __name__ == "__main__":
     g = Graph(4)
+
+    # g.add_edge_lst(0, 1)
+    # g.add_edge_lst(0, 2)
+    # g.add_edge_lst(1, 3)
+    # g.add_edge_lst(2, 3)
 
     g.add_edge(0, 1)
     g.add_edge(0, 2)
     g.add_edge(1, 3)
-    g.add_edge(2, 3)
-
-    # g.add_edge(0, 1)
-    # g.add_edge(1, 2)
-    # g.add_edge(3, 0)
-    # g.add_edge(3, 1)
+    g.add_edge(1, 4)
 
     # g = Graph(7)
     # g.add_edge(1, 2)
@@ -239,6 +262,9 @@ if __name__ == "__main__":
     # g.add_edge(5, 6)
     # g.add_edge(3, 6)
 
+    # print(g.print_graph_lst())
     print(g.print_graph())
+    new_g = transpose(g)
+    print(new_g.print_graph())
     # print(bfs_traversal(g, 0))
     # print(dfs_traversal(g, 1))
