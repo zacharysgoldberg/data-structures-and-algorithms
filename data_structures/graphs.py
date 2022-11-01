@@ -62,26 +62,28 @@ def bfs_traversal(g, source):
             result += res
     return result
 
+# DFS for LinkedLists
+
 
 def dfs_helper(g, source, visited):
-    result = ''
+    result = []
     visited[source] = True
     stack = [source]
     while stack:
         node = stack.pop()
-        result += str(node)
+        result.append(node)
         adjacent = g.array[node].head
         while adjacent:
             if visited[adjacent.data] is False:
                 stack.append(adjacent.data)
                 visited[adjacent.data] = True
             adjacent = adjacent.next
-    return result, visited
+    return result
 
 
 def dfs_traversal(g, source):
     visited = [False] * g.vertices
-    result, visited = dfs_helper(g, source, visited)
+    result = dfs_helper(g, source, visited)
     # if source did not start prior to an unvisited vertice,
     # revisit vertices starting from that one and all other unvisited vertices found
     for i in range(g.vertices):
@@ -89,6 +91,37 @@ def dfs_traversal(g, source):
             res, visited = dfs_helper(g, i, visited)
             result += res
     return result
+
+# DFS Recursive
+
+
+def dfs_rec(g, source, visited):
+    visited[source] = True
+    adjacent = g.graph[source]
+    while adjacent:
+        if visited[adjacent.vertex] is False:
+            print(adjacent.vertex, end=" ")
+            dfs_rec(g, adjacent.vertex, visited)
+        adjacent = adjacent.next
+
+# Node Graph iterative DFS
+
+
+def dfs(g, source, visited):
+    result = []
+    visited[source] = True
+    stack = [source]
+    while stack:
+        node = stack.pop()
+        result.append(node)
+        adjacent = g.graph[node]
+        while adjacent:
+            if visited[adjacent.vertex] is False:
+                stack.append(adjacent.vertex)
+                visited[adjacent.vertex] = True
+            adjacent = adjacent.next
+    return result
+
 
 # Detect Cycle in a Directed Graph
 
@@ -240,31 +273,100 @@ def transpose(g):
     return new_graph
 
 
+# DFS
+
+
+def find_all_paths(g, source, destination):
+    visited = [False] * g.vertices
+    all_paths = []
+    find_all_paths_rec(g, source, destination, visited, [], all_paths)
+    return all_paths
+
+
+def find_all_paths_rec(g, source, destination, visited, path, all_paths):
+    visited[source] = True
+    path.append(source)
+    adjacent = g.graph[source]
+    if source == destination:
+        all_paths.append(list(path))
+    else:
+        while adjacent:
+            if visited[adjacent.vertex] is False:
+                find_all_paths_rec(g, adjacent.vertex,
+                                   destination, visited, path, all_paths)
+            adjacent = adjacent.next
+    # Remove current vertex from path and mark it as unvisited
+    path.pop()
+    visited[source] = False
+
+
+def is_strongly_connected(g):
+    visited = [False] * g.vertices
+    # Return False if all vertices are not visited in DFS
+    dfs_rec(g, 0, visited)
+    if any(not i for i in visited):
+        return False
+    # Do same for transposed graph
+    new_g = transpose(g)
+    visited = [False] * new_g.vertices
+    dfs_rec(new_g, 0, visited)
+    if any(not i for i in visited):
+        return False
+
+    return True
+
+
+def connected_components(g):
+    visited = [False] * g.vertices
+    connected_components = []
+    for v in range(len(visited)):
+        if visited[v] is False:
+            result = dfs(g, v, visited)
+            print(result)
+            connected_components.append(list(result))
+    return connected_components
+
+
 if __name__ == "__main__":
-    g = Graph(4)
+    # g = Graph(5)
 
     # g.add_edge_lst(0, 1)
     # g.add_edge_lst(0, 2)
     # g.add_edge_lst(1, 3)
     # g.add_edge_lst(2, 3)
 
-    g.add_edge(0, 1)
-    g.add_edge(0, 2)
-    g.add_edge(1, 3)
-    g.add_edge(1, 4)
-
-    # g = Graph(7)
-    # g.add_edge(1, 2)
+    # g.add_edge(0, 1)
+    # g.add_edge(0, 2)
     # g.add_edge(1, 3)
-    # g.add_edge(2, 4)
+    # g.add_edge(1, 4)
+
+    g = Graph(7)
+    g.add_edge(1, 2)
+    g.add_edge(1, 3)
+    g.add_edge(2, 4)
+    g.add_edge(4, 5)
+    g.add_edge(2, 5)
+    g.add_edge(5, 6)
+    g.add_edge(3, 6)
+
+    # g.add_edge(0, 1)
+    # g.add_edge(1, 2)
+    # g.add_edge(2, 3)
+    # g.add_edge(3, 0)
     # g.add_edge(4, 5)
-    # g.add_edge(2, 5)
     # g.add_edge(5, 6)
-    # g.add_edge(3, 6)
+
+    # g = Graph(5)
+    # g.add_edge(0, 1)
+    # g.add_edge(1, 2)
+    # g.add_edge(2, 3)
+    # g.add_edge(2, 4)
+    # g.add_edge(3, 0)
+    # g.add_edge(4, 2)
 
     # print(g.print_graph_lst())
     print(g.print_graph())
-    new_g = transpose(g)
-    print(new_g.print_graph())
+    # print(connected_components(g))
     # print(bfs_traversal(g, 0))
     # print(dfs_traversal(g, 1))
+    # print(is_strongly_connected(g))
