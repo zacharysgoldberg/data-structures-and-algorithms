@@ -1,4 +1,4 @@
-from helpers import AdjNode
+from helpers import AdjNode, Node
 from singly_linked_lists import LinkedList
 from collections import deque
 
@@ -326,6 +326,93 @@ def connected_components(g):
             connected_components.append(list(result))
     return connected_components
 
+# Clone Directed Graph
+
+
+def clone(root):
+    nodes = {}
+    return clone_rec(root, nodes)
+
+
+def clone_rec(root, nodes):
+    if root is None:
+        return None
+
+    node = Node(root.data)
+    nodes.update({root: node})
+    for neighbor in root.neighbors:
+        n = nodes.get(neighbor)
+        if n is None:
+            node.neighbors.append(clone_rec(neighbor, nodes))
+        else:
+            node.neighbors.append(n)
+    return node
+
+
+# Tasks Scheduling
+    """ 1. Initialize a hashmap of node to parent count.
+        2. Go through the nodes, count how many parents each node has (a parent node means another node pointing to the current).
+        3. Push the nodes with 0 parents into the queue.
+        4. Pop each node from the queue, subtract 1 from the parent count of each node it points to.
+        5. If a node's parent count drops to 0, then push it into the queue.
+        6. repeat until the queue is empty. If the queue is not empty, then there must be a cycle.
+    """
+
+
+def is_scheduling_possible(tasks, prerequisites):
+    sorted_order = []
+    queue = deque()
+    node_count = {i: 0 for i in range(tasks)}
+    graph = {i: [] for i in range(tasks)}
+
+    for prereq in prerequisites:
+        parent, child = prereq
+        graph[parent].append(child)
+        node_count[child] += 1
+
+    for node in node_count:
+        if node_count[node] == 0:
+            queue.append(node)
+
+    while queue:
+        node = queue.popleft()
+        sorted_order.append(node)
+        for child in graph[node]:
+            node_count[child] -= 1
+            if node_count[child] == 0:
+                queue.append(child)
+    # [Find Order]
+    # print(sorted_order)
+    if len(sorted_order) == tasks:
+        return True
+    return False
+
+
+# All Tasks Scheduling Orders
+
+
+def print_orders(tasks, prerequisites):
+    sorted_order = []
+    queue = deque()
+    node_count = {i: 0 for i in range(tasks)}
+    graph = {i: [] for i in range(tasks)}
+
+    for prereq in prerequisites:
+        parent, child = prereq
+        graph[parent].append(child)
+        node_count[child] += 1
+
+    for node in node_count:
+        if node_count[node] == 0:
+            queue.append(node)
+
+        return all_topological_orders(sorted_order, node_count, graph, queue)
+
+
+def all_topological_orders(sorted_order, node_count, graph, queue):
+    if queue:
+        return
+
 
 if __name__ == "__main__":
     # g = Graph(5)
@@ -365,8 +452,11 @@ if __name__ == "__main__":
     # g.add_edge(4, 2)
 
     # print(g.print_graph_lst())
-    print(g.print_graph())
+    # print(g.print_graph())
     # print(connected_components(g))
     # print(bfs_traversal(g, 0))
     # print(dfs_traversal(g, 1))
     # print(is_strongly_connected(g))
+    print(is_scheduling_possible(3, [[0, 1], [1, 2], [2, 0]]))
+    print(is_scheduling_possible(
+        6, [[2, 5], [0, 5], [0, 4], [1, 4], [3, 2], [1, 3]]))
