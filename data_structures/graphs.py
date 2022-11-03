@@ -375,9 +375,9 @@ def is_scheduling_possible(tasks, prerequisites):
             queue.append(node)
 
     while queue:
-        node = queue.popleft()
-        sorted_order.append(node)
-        for child in graph[node]:
+        vertex = queue.popleft()
+        sorted_order.append(vertex)
+        for child in graph[vertex]:
             node_count[child] -= 1
             if node_count[child] == 0:
                 queue.append(child)
@@ -406,12 +406,71 @@ def print_orders(tasks, prerequisites):
         if node_count[node] == 0:
             queue.append(node)
 
-        return all_topological_orders(sorted_order, node_count, graph, queue)
+    all_topological_orders(sorted_order, node_count, graph, queue)
 
 
 def all_topological_orders(sorted_order, node_count, graph, queue):
     if queue:
-        return
+        for vertex in queue:
+            sorted_order.append(vertex)
+            queue_for_next_call = deque(queue)
+            queue_for_next_call.remove(vertex)
+            for child in graph[vertex]:
+                node_count[child] -= 1
+                if node_count[child] == 0:
+                    queue_for_next_call.append(child)
+
+            all_topological_orders(
+                sorted_order, node_count, graph, queue_for_next_call)
+
+            sorted_order.remove(vertex)
+            for child in graph[vertex]:
+                node_count[child] += 1
+    if len(sorted_order) == len(node_count):
+        print(sorted_order)
+
+
+# Alien Dictionary
+
+
+def find_order(words):
+    if len(words) == 0:
+        return ""
+
+    in_degree = {}
+    graph = {}
+    for word in words:
+        for char in word:
+            in_degree[char] = 0
+            graph[char] = []
+
+    for i in range(len(words) - 1):
+        char1, char2 = words[i], words[i + 1]
+        for j in range(min(len(char1), len(char2))):
+            parent, child = char1[j], char2[j]
+            if parent != child:  # if the two characters are different put the child into it's parent's list
+                graph[parent].append(child)
+                in_degree[child] += 1
+                break  # only the first different character between the two words will help us find the order
+
+    sources = deque()
+    for char in in_degree:
+        if in_degree[char] == 0:
+            sources.append(char)
+
+    sorted_order = []
+    while sources:
+        vertex = sources.popleft()
+        sorted_order.append(vertex)
+        for child in graph[vertex]:
+            in_degree[child] -= 1
+            if in_degree[child] == 0:
+                sources.append(child)
+    # Check for cyclic dependency
+    if len(sorted_order) != len(in_degree):
+        return ""
+
+    return "".join(sorted_order)
 
 
 if __name__ == "__main__":
@@ -458,5 +517,5 @@ if __name__ == "__main__":
     # print(dfs_traversal(g, 1))
     # print(is_strongly_connected(g))
     print(is_scheduling_possible(3, [[0, 1], [1, 2], [2, 0]]))
-    print(is_scheduling_possible(
-        6, [[2, 5], [0, 5], [0, 4], [1, 4], [3, 2], [1, 3]]))
+    print_orders(
+        6, [[2, 5], [0, 5], [0, 4], [1, 4], [3, 2], [1, 3]])
