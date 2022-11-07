@@ -25,6 +25,13 @@ class TrieNode:
         self.char = char  # To store the value of a particular key
 
 
+class HashEntry:
+    def __init__(self, key, data):
+        self.key = key
+        self.data = data
+        self.next = None
+
+
 class AdjNode:
     def __init__(self, data):
         self.vertex = data
