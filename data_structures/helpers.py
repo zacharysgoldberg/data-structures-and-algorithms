@@ -25,10 +25,10 @@ class TrieNode:
         self.char = char  # To store the value of a particular key
 
 
-class HashEntry:
+class HashNode:
     def __init__(self, key, data):
         self.key = key
-        self.data = data
+        self.value = data
         self.next = None
 
 
