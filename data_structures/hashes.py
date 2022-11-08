@@ -1,4 +1,5 @@
-from helpers import HashNode
+from helpers import HashNode, Node
+from singly_linked_lists import LinkedList
 
 
 class HashTable:
@@ -252,3 +253,14 @@ def findFirstUnique(lst):
         if counts[el] == 1:
             return el
     return None
+
+
+def detect_loop(lst):
+    visited = set()
+    head = lst.get_head()
+    while head:
+        if head.data in visited:
+            return True
+        visited.add(head.data)
+        head = head.next_element
+    return False
