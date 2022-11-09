@@ -264,3 +264,55 @@ def detect_loop(lst):
         visited.add(head.data)
         head = head.next_element
     return False
+
+
+def remove_duplicates(lst):
+    visited = set()
+    curr = lst.get_head()
+    prev = None
+    while curr:
+        if curr.data in visited:
+            prev.next_element = curr.next_element
+            # curr = curr.next_element
+            # continue
+        visited.add(curr.data)
+        prev = curr
+        curr = curr.next_element
+
+    return lst
+
+
+"""
+Given two lists, A and B, union is a list 
+that contains elements/objects that belong to either A, B, or both.
+"""
+
+
+def union(list1, list2):
+    head1 = list1.get_head()
+    while head1.next_element:
+        head1 = head1.next_element
+    head1.next_element = list2.get_head()
+    list1.remove_duplicates()
+    return list1
+
+# Returns a new list containing the intersection of list1 and list2
+
+
+def intersection(list1, list2):
+    visited = set()
+    result = LinkedList()
+    head1 = list1.get_head()
+    while head1:
+        if head1.data not in visited:
+            visited.add(head1.data)
+        head1 = head1.next_element
+    head2 = list2.get_head()
+    while head2:
+        if head2.data in visited:
+            result.insert_at_tail(head2.data)
+        visited.add(head2.data)
+        head2 = head2.next_element
+
+    result.remove_duplicates()
+    return result
