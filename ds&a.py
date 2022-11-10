@@ -8,7 +8,7 @@ class Solution(object):
     def __init__(self):
         self.found = []
 
-    def first_and_last(self, nums, target):
+    def binary_search(self, nums, target):
         low = 0
         high = len(nums)
 
@@ -29,7 +29,7 @@ nums = [2, 2, 3, 4, 3]
 target = 3
 
 res = Solution()
-# print(res.first_and_last(nums=nums, target=target))
+# print(res.binary_search(nums=nums, target=target))
 
 
 def lonely_integer(a):
