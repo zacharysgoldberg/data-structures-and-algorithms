@@ -4,34 +4,6 @@ import string
 from data_structures import queues
 
 
-class Solution(object):
-    def __init__(self):
-        self.found = []
-
-    def binary_search(self, nums, target):
-        low = 0
-        high = len(nums)
-
-        while high >= low:
-            mid = (low + high) // 2
-            if nums[mid] < target:
-                low = mid + 1
-            elif nums[mid] > target:
-                high = mid - 1
-            else:
-                self.found.append(mid)
-                low = mid + 1
-
-        return self.found
-
-
-nums = [2, 2, 3, 4, 3]
-target = 3
-
-res = Solution()
-# print(res.binary_search(nums=nums, target=target))
-
-
 def lonely_integer(a):
     low = 0
     high = len(a) - 1
