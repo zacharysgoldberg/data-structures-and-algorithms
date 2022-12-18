@@ -276,3 +276,23 @@ def find_product(lst):
         products[i] = products[i] * product
         product = product * lst[i]
     return products
+
+
+def find_duplicates(lst):
+    """
+    Function to find duplicates in a given lst
+    :param lst: A list of integers
+    :return: A list of duplicate integers with no repetition
+    """
+
+    result = []  # A list to store duplicates
+
+    duplicates = set()
+
+    for el in lst:
+        if el in duplicates and el not in result:
+            result.append(el)
+        else:
+            duplicates.add(el)
+
+    return result

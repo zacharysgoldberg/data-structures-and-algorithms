@@ -132,3 +132,21 @@ def fizzBuzz(n):
         else:
             print(i)
 # fizzBuzz(15)
+
+
+def anagrams(lst):
+    anagrams = []
+    pairs = {}
+
+    for el in lst:
+        key = "".join(sorted(el))
+        if key not in pairs.keys():
+            pairs[key] = []
+            pairs[key].append(el)
+        else:
+            pairs[key].append(el)
+
+    for key, value in pairs.items():
+        anagrams.append(value)
+
+    return sorted(anagrams)
