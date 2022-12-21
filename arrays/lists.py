@@ -318,3 +318,87 @@ def find_peak_rec(lst, low, high):
         return find_peak_rec(lst, mid - 1, high)
     else:
         return find_peak_rec(lst, low, mid + 1)
+
+# =========================================================
+
+
+def max_sub_list_of_size_k(lst, k):
+    """
+    Finds a maximum sum of a sub-list of given window size k 
+    :param lst: List of integers
+    :param k: Window size of the list
+    :return: Returns the maximum sum of a sub-list of given window size k
+    """
+    max_sum, window_sum = 0, 0
+    start = 0
+    for end in range(len(lst)):
+        window_sum += lst[end]  # Add the next element
+        # Slide the window, we don't need to slide if we have not hit the required window size of 'k'
+        if end >= k - 1:
+            max_sum = max(max_sum, window_sum)
+            window_sum -= lst[start]  # Subtract the element going out
+            start += 1  # Slide the window ahead
+
+    return max_sum
+
+
+def minimum_steps(lst):
+    """
+    Function which calculates the minimum steps to collect coins from the list
+    :param lst: List of coins stack
+    :return: Returns minimum steps to collect coins from the list, otherwise 0
+    """
+    steps = 0
+    for i in range(len(lst)):
+        if lst[i] > 1:
+            steps += 1
+    return steps + 1
+
+
+"""
+    Finds the closest number to the target in the list
+    :param lst: Sorted list of integers
+    :param target: Left sided index of the list
+    :return: Closest element from the list to the target
+    """
+
+
+def find_closest(lst, target):
+
+    return lst[min(range(len(lst)), key=lambda i: abs(lst[i] - target))]
+
+
+def find_closest_bnry(lst, target):
+    # # If the target is less or equal to first element of the list
+    # if target <= lst[0]:
+    #     return lst[0]
+    # # If the target is less or equal to first element of the list
+    # if target >= lst[len(lst) - 1]:
+    #     return lst[len(lst) - 1]
+    # Binary Search
+    low = 0  # Starting index of the list
+    high = len(lst)  # Ending index of the list
+    while low < high:
+        mid = (low + high) // 2
+        if lst[mid] == target:
+            return lst[mid]
+        # If target is less than list element then go to left side of list
+        if target < lst[mid]:
+            # If target is not in the list and the element of list exceeds the target then find the closest one
+            if mid > 0 and target > lst[mid - 1]:
+                if target - lst[mid] >= lst[mid - 1] - target:
+                    return lst[mid - 1]
+                else:
+                    return lst[mid]
+            # Repeat for left half
+            high = mid
+        # If target is greater than mid then go towards the right of the list
+        else:
+            if mid < len(lst) - 1 and target < lst[mid + 1]:
+                if target - lst[mid] >= lst[mid + 1] - target:
+                    return lst[mid + 1]
+                else:
+                    return lst[mid]
+            low = mid + 1
+    # Last possible option left
+    return lst[mid]

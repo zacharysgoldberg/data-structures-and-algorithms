@@ -174,6 +174,70 @@ def search_next_letter(letters, key):
     return letters[low % len(letters)]
 
 
+# ==============================================================================
+
+def find_floor(lst, low, high, x):
+    """
+    Modified binary search function to find the floor of given number x
+    :param lst: List of integers
+    :param low: Starting index of the list
+    :param high: Ending index of the list
+    :return: Returns the floor of an integer x if exists, otherwise -1
+    """
+    # Base case
+    if low > high:
+        return - 1
+    if x >= lst[high]:
+        return lst[high]
+
+    mid = (low + high) // 2
+
+    if lst[mid] < x and lst[mid] > lst[mid - 1] or lst[mid] == x:
+        return lst[mid]
+    elif lst[mid] < x and lst[mid] < lst[mid + 1]:
+        find_floor(lst, mid + 1, high, x)
+    elif lst[mid] > x:
+        find_floor(lst, low, mid - 1, x)
+
+
+def find_ceiling(lst, low, high, x):
+    """
+    Modified binary search function to find the floor of given number x
+    :param lst: List of integers
+    :param low: Starting index of the list
+    :param high: Ending index of the list
+    :return: Returns the ceiling of an integer x if exists, otherwise -1
+    """
+    # Base case
+    if x <= lst[low]:
+        return lst[low]
+    if x > lst[high]:
+        return -1
+
+    mid = (low + high) // 2
+    print(lst[mid])
+
+    if lst[mid] > x and lst[mid] < lst[mid + 1] or lst[mid] == x:
+        return lst[mid]
+    elif lst[mid] > x and lst[mid] > lst[mid - 1]:
+        find_ceiling(lst, low, mid - 1, x)
+    elif lst[mid] < x:
+        if mid + 1 <= high and x <= lst[mid + 1]:
+            return lst[mid + 1]
+        find_ceiling(lst, mid + 1, high, x)
+
+
+def find_floor_ceiling(lst, x):
+    # DO NOT MODIFY THIS FUNCTION #
+    """
+    Calls the find_floor and find_ceiling functions and returns their results
+    :param lst: List of integers
+    :param x: An integer
+    :return: Returns the floor of an integer x, otherwise -1
+    """
+    return find_floor(lst, 0, len(lst) - 1, x), find_ceiling(lst, 0, len(lst) - 1, x)
+
+
 def main():
     # reader = ArrayReader([4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30])
     # print(search_in_infinite_array(reader, 16))
