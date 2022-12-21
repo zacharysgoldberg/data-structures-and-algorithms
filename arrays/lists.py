@@ -296,3 +296,25 @@ def find_duplicates(lst):
             duplicates.add(el)
 
     return result
+
+# ==========================================================
+
+
+def find_peak(lst):
+    """
+    Finds a peak element
+    :param lst: List of integers
+    :return: Returns a peak element in a given list
+    """
+    return find_peak_rec(lst, 0, len(lst) - 1)
+
+
+def find_peak_rec(lst, low, high):
+    mid = (low + high) // 2
+
+    if lst[mid] >= lst[mid + 1] and lst[mid] >= lst[mid - 1] and mid > 0 and mid < len(lst) - 1:
+        return lst[mid]
+    elif lst[mid - 1] > lst[mid] and mid > 0:
+        return find_peak_rec(lst, mid - 1, high)
+    else:
+        return find_peak_rec(lst, low, mid + 1)
