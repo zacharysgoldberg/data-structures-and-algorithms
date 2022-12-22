@@ -237,6 +237,78 @@ def find_floor_ceiling(lst, x):
     """
     return find_floor(lst, 0, len(lst) - 1, x), find_ceiling(lst, 0, len(lst) - 1, x)
 
+# ==================================================================================================
+
+    """
+    divide the given list into half (say lst1 and lst2) 
+    and swap the second (right) half element of lst1 with the first (left) half element of lst2. 
+    Keep doing this recursively for lst1 and lst2.
+    """
+
+
+def shuffle_list_rec(lst, low, high):
+    if high - low > 1:
+        mid = (low + high) // 2
+        left = (low + mid) // 2
+        right = mid + 1
+        for i in range(left + 1, mid + 1):
+            lst[i], lst[right] = lst[right], lst[i]
+            right += 1
+
+        shuffle_list_rec(lst, low, mid)
+        shuffle_list_rec(lst, mid + 1, high)
+    return lst
+
+
+def shuffle_list(lst):
+    """
+    Shuffles the list
+    :param lst: List of integers
+    """
+    log = math.log2(len(lst)) % 2
+    if len(lst) != 2 and log == 0 or log == 1:
+        return shuffle_list_rec(lst, 0, len(lst) - 1)
+
+    return lst
+
+# ==========================================================================================
+
+
+def inversion_count(lst):
+    """
+    Function to find Inversion Count
+    :param lst: List of integers
+    :return: The inversion count of the list
+    """
+    return inversion_count_rec(lst, 0, len(lst) - 1)
+
+
+def inversion_count_rec(lst, low, high):
+    count = 0
+    if low < high:
+        mid = (low + high) // 2
+        # left sub list
+        count += inversion_count_rec(lst, low, mid)
+        # right sub list
+        count += inversion_count_rec(lst, mid + 1, high)
+        # calculating both sub lists
+        count += get_inversion_count(lst, low, high, mid)
+
+    return count
+
+
+def get_inversion_count(lst, low, high, mid):
+    left = low
+    right = mid + 1
+    count = 0
+    while left <= mid and right <= high:
+        if lst[left] < lst[right]:
+            left += 1
+        else:
+            count += (mid - left + 1)
+            right += 1
+    return count
+
 
 def main():
     # reader = ArrayReader([4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30])
