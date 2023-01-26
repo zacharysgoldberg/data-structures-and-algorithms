@@ -21,3 +21,11 @@ def print_pascal(testVariable):
 
         pascals_triangle += [1]
         return pascals_triangle
+
+
+# Convert decimal number to binary number
+def decimal_to_binary(testVariable):
+    if testVariable <= 1:
+        return str(testVariable)
+    else:
+        return decimal_to_binary(testVariable // 2) + decimal_to_binary(testVariable % 2)
