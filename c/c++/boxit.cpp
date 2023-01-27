@@ -28,19 +28,20 @@ public:
     int getHeight() { return height; }
 
     long long CalculateVolume() { return (long long)breadth * length * height; }
+
     // Operator Overload
-    bool operator < (Box& B) {
+    bool operator < (const Box& B) {
         if (length < B.length) return true;
         else if (breadth < B.breadth && length == B.length) return true;
         else if (height < B.height && breadth == B.breadth && length == B.length) return true;
         else return false;
     }
-
-    friend std::ostream& operator << (std::ostream& out, Box& B) {
-        out << B.getLength() << " " << B.getBreadth() << " " << B.getHeight();
-        return out;
-    };
 };
+
+std::ostream& operator << (std::ostream& out, Box& B) {
+    out << B.getLength() << " " << B.getBreadth() << " " << B.getHeight();
+    return out;
+}
 
 
 int main() {
@@ -81,3 +82,4 @@ int main() {
             std::cout << NewBox << std::endl;
         }
     }
+}
