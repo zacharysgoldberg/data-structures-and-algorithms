@@ -2,11 +2,11 @@
 #include <iostream>
 #include <vector>
 
-void update(int *a,int *b) {
+void update(int* a, int* b) {
     int sum = *a + *b;
-     int absDiff = *a - *b > 0 ? (*a - *b) : -(*a - *b);
-     *a = sum;
-     *b = absDiff;
+    int absDiff = *a - *b > 0 ? (*a - *b) : -(*a - *b);
+    *a = sum;
+    *b = absDiff;
 }
 
 int main() {
@@ -14,9 +14,9 @@ int main() {
 
     int a = 4;
     int b = 5;
-    int *pa = &a, *pb = &b;
-    
-    std::cout << &a << " " << &b << std::endl;
+    int* pa = &a, * pb = &b;
+
+    std::cout << a << " " << b << std::endl;
     update(pa, pb);
     std::cout << a << " " << b << std::endl;
 
@@ -24,26 +24,26 @@ int main() {
 
     int size;
     std::cin >> size;
-    int *arr = new int[size];
+    int* arr = new int[size];
     for (int i = 0; i < size; i++) {
         std::cin >> arr[i];
     }
-    for (int i = 0; i < size ; i++) {
+    for (int i = 0; i < size; i++) {
         std::cout << arr[size - i - 1] << " ";
     }
 
-    delete [] arr;
+    delete[] arr;
 
     //* Vector Matrix
 
     int n, q, k, val, index1, index2;
     std::cout << "\nNumber of variable-length arrays:\n";
     std::cin >> n;
-    std::cout << "Number of queries:\n" ;
+    std::cout << "Number of queries:\n";
     std::cin >> q;
-    
+
     std::vector<std::vector<int>> vec;
-    
+
     for (int i = 0; i < n; i++) {
         std::cout << "Number of elements in vector\n";
         std::cin >> k;
@@ -55,17 +55,17 @@ int main() {
         }
         vec.push_back(tmp);
     }
-    
+
     for (int i = 0; i < q; i++) {
-            while (true) {
+        while (true) {
             std::cout << "First and Second index values for " << i + 1 << " iteration\n";
             try {
                 std::cin >> index1 >> index2;
-                if (index1 >= vec.size()) {throw(index1);}
+                if (index1 >= vec.size()) { throw(index1); }
 
-                else if (index2 >= vec[i].size()) {throw(index2);}
+                else if (index2 >= vec[i].size()) { throw(index2); }
 
-                else {std::cout << vec[index1][index2] << std::endl; break;}
+                else { std::cout << vec[index1][index2] << std::endl; break; }
             }
             catch (...) {
                 std::cout << "Invalid index selection. Try again.\n";
