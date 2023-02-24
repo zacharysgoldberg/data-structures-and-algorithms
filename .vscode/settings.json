@@ -60,6 +60,9 @@
     "unordered_map": "cpp",
     "forward_list": "cpp",
     "regex": "cpp",
-    "xhash": "cpp"
+    "xhash": "cpp",
+    "locale": "cpp",
+    "xlocbuf": "cpp",
+    "xlocmes": "cpp"
   }
 }
