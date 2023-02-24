@@ -7,6 +7,7 @@ using std::endl;
 
 
 bool findSumOfThree(std::vector<int> nums, int target) {
+    std::sort(nums.begin(), nums.end());
     for (int i = 0; i < nums.size(); i++) {
         int low = i + 1;
         int high = nums.size() - 1;

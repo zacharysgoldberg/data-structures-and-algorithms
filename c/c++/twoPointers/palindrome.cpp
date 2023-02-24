@@ -20,8 +20,7 @@ void twoPointers(vector<int> array) {
 */
 
 
-std::string isPalindrome(std::string inputString)
-{
+std::string isPalindrome(std::string inputString) {
     int left = 0;
     int right = inputString.size() - 1;
 

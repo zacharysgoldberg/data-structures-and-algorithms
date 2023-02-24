@@ -17,7 +17,7 @@ using namespace std;
 5. If no palindrome is obtained, return False, else if no more than one mismatch occurs throughout the traversal, return True
 */
 
-bool check(string& word, int left, int right) {
+bool checkOther(string& word, int left, int right) {
     while (left < right) {
         if (word[left] != word[right]) return false;
 
@@ -39,7 +39,7 @@ string validPalindrome(string word) {
         right--;
     }
 
-    if (check(word, left + 1, right) || check(word, left, right - 1)) return word;
+    if (checkOther(word, left + 1, right) || checkOther(word, left, right - 1)) return word;
 
     return " ";
 }
