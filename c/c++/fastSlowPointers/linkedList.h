@@ -80,7 +80,20 @@ public:
     }
 };
 
-//TODO: Reverse linked list
+// Reverse linked list
+
+LinkedListNode* reverseLinkedList(LinkedListNode* head) {
+    LinkedListNode* reverse = nullptr;
+
+    while (head) {
+        LinkedListNode* next = head->next;
+        head->next = reverse;
+        reverse = head;
+        head = next;
+    }
+
+    return reverse;
+}
 
 
 void printLinkedList(LinkedListNode* head) {
