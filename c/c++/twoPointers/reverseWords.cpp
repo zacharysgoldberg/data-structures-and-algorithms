@@ -35,31 +35,22 @@ void reverseString(string& sentence, int start, int end) {
 }
 
 string reverseWords(string sentence) {
-    // removing leading and trailing whitespace
-    sentence = regex_replace(sentence, regex("^ +| +$|( ) +"), "$1");
+    sentence = regex_replace(sentence, regex("^ +| +$|( ) +"), "$1");   // removing leading and trailing whitespace
 
-    int stringLen = sentence.size();
-    reverseString(sentence, 0, stringLen - 1);
+    int start = 0, end = sentence.length() - 1;
 
-    int start = 0;
-    int end = sentence.size() - 1;
-    int i = 0;
+    reverseString(sentence, start, end);
 
-    while (true) {
+    for (int i = 0; i < sentence.length(); i++) {
         if (sentence[i] == ' ') {
-            end = i;
+            end = i;                                                    // position of the space
             reverseString(sentence, start, end - 1);
-            start = end + 1;
-            end = sentence.size() - 1;
+            start = i + 1;                                              // position after the space
+            end = sentence.length() - 1;                                // position at end of string
         }
-        if (i == stringLen) {
+        if (i == sentence.length() - 1)                                 // no more spaces/words. End of sentence
             reverseString(sentence, start, end);
-            break;
-        }
-
-        i++;
     }
-
     return sentence;
 }
 

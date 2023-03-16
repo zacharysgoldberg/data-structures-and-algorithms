@@ -4,45 +4,55 @@
 using namespace std;
 
 /*
-1.  Initialize two pointers.
-    Move the slow pointer one time forward/backward and the fast pointer two times forward/backward
+1.  Move the slow pointer x steps forward/backward, where x is the value at the itℎ index of the array
 
-2.  If loop direction changes at any point, return False
+2.  Move the fast pointer x steps forward/backward and do this again for the value at the (i + 1)tℎ index of the array.
 
-3.  If the direction does not change, check whether both pointers meet at the same node then loop is detected
+3.  Return TRUE when both pointers meet at the same point.
 
-4.  Repeat until there are exactly n elements in an array
+4.  If the direction changes at any point, then break the loop and follow the steps above for the next element of the array.
+
+5.  Return FALSE if we have traversed every element of the array without finding a loop.
 */
 
-int next(vector<int>& array, int i) {
-    return (array[i] + i + array.size()) % array.size();
+int next_step(vector<int> arr, int index, bool current_direction) {
+    int arr_size = arr.size();
+    bool new_direction = false;
+    if (arr[index] >= 0)
+        new_direction = true;
+    // Loop can't be found if the loop direction is changed
+    // or the value of the array element is equal to the length of the array
+    if (new_direction != current_direction || abs(arr[index] % arr_size) == 0)
+        return -1;
+    return (index + arr[index] + arr_size) % arr_size;
 }
 
+bool circular_array_loop(vector<int> arr) {
+    bool current_direction = false;
 
-bool circularArrayLoop(vector<int>& array) {
-    for (int i = 0; i < array.size(); i++) {
+    for (int i = 0; i < arr.size(); i++) {
+        if (abs(arr[i]) == arr.size())
+            continue;
+        if (arr[i] >= 0)
+            current_direction = true;
+        else
+            current_direction = false;
         int slow = i, fast = i;
 
-        if (array[i] == 0) continue;
-
-        while (array[next(array, slow)] * array[i] > 0 &&
-            array[next(array, fast)] * array[i] > 0 &&
-            array[next(array, next(array, fast))] * array[i] > 0) {
-
-            slow = next(array, slow);
-            fast = next(array, next(array, fast));
-
-            if (slow == fast) {
-                if (slow == next(array, slow)) break;
-                else return true;
-            }
+        while (slow != fast || slow != -1 || fast != -1) {
+            // Move slow pointer one step and fast pointer two
+            // steps forward/backward
+            slow = next_step(arr, slow, current_direction);
+            if (slow == -1)
+                break;
+            fast = next_step(arr, fast, current_direction);
+            if (fast != -1)
+                fast = next_step(arr, fast, current_direction);
+            if (slow == fast || fast == -1)
+                break;
         }
-        slow = i;
-        while (array[slow] * array[i] > 0) {
-            int temp = next(array, slow);
-            array[slow] = 0;
-            slow = temp;
-        }
+        if (slow == fast && slow != -1)
+            return true;
     }
     return false;
 }
@@ -60,7 +70,7 @@ int main() {
     for (int i = 0; i < input.size(); i++) {
         // std::cout << i + 1 << ".\tGiven arr: " << PrintArray(input[i]) << "\n";
         cout << "\n\t\tProcessing... \n";
-        bool res = circularArrayLoop(input[i]);
+        bool res = circular_array_loop(input[i]);
         cout << "\n\tFound loop: " << boolalpha << res << "\n";
         cout << string(100, '-') << "\n";
     }

@@ -24,10 +24,10 @@ using namespace std;
 set<string> find_repeated_sequences(string str, int k) {
     set<string> repeated_seq;
     map<string, int> counter;
-
+    // Edge case
     if (str.length() < k)
         return repeated_seq;
-
+    // Core algo
     for (int i = 0; i < str.length() - k; i++) {
         counter[str.substr(i, k)] += 1;
     }

@@ -23,10 +23,23 @@ using namespace std;
 */
 
 
-vector<int> findMaxSlidingWindow(vector<int>& nums, int windowSize) {
+vector<int> find_max_sliding_window(vector<int>& nums, int windowSize) {
     vector<int> result;
     deque<int> window;
 
+    for (int i = 0; i < nums.size(); i++) {
+        while (!window.empty() && nums[i] >= window.back())
+            window.pop_back();
+
+        window.push_back(nums[i]);
+        if (i >= windowSize - 1) {
+            result.push_back(window.front());
+            if (nums[i - windowSize + 1] == window.front())
+                window.pop_front();
+        }
+    }
+
+    /*
     // Initial window
     for (int i = 0; i < windowSize; i++) {
         while (!window.empty() && nums[i] >= nums[window.back()])
@@ -46,21 +59,6 @@ vector<int> findMaxSlidingWindow(vector<int>& nums, int windowSize) {
 
         window.push_back(i);
         result.push_back(nums[window.front()]);
-    }
-
-    // Without using indexes
-    /*
-    for (int i = 0; i < nums.size(); i++) {
-        while (!window.empty() && window.back() < nums[i])
-            window.pop_back();
-
-        window.push_back(nums[i]);
-        if (i >= windowSize - 1) {
-            result.push_back(window.front());
-            if (nums[i - windowSize + 1] == window.front())
-                window.pop_front();
-        }
-
     }
     */
 
@@ -93,7 +91,7 @@ int main() {
     for (int i = 0; i < targetList.size(); i++) {
         std::cout << i + 1 << ".\tOriginal array:\t" << numsList[i] << std::endl;
         std::cout << "\tWindow size:\t" << to_string(targetList[i]) << std::endl;
-        vector<int> result = findMaxSlidingWindow(numsList[i], targetList[i]);
+        vector<int> result = find_max_sliding_window(numsList[i], targetList[i]);
         std::cout << "\n\tMax:\t" << result << std::endl;
         std::cout << std::string(100, '-') << std::endl;
     }

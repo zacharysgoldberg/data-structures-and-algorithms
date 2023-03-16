@@ -26,7 +26,7 @@ def plus_minus(arr):
 # plus_minus([-4, 3, -9, 0, 4, 1])
 
 
-def mini_max_sum(arr):
+def min_max_sum(arr):
     arr.sort()
     min = sum(arr[:-1])  # exclusive
     max = sum(arr[1:])  # inclusive
@@ -34,7 +34,7 @@ def mini_max_sum(arr):
     print(min, max)
 
 
-# mini_max_sum([1, 2, 3, 4, 5])
+# min_max_sum([1, 2, 3, 4, 5])
 
 def reverse_array(a):
     a.reverse()
@@ -176,19 +176,27 @@ def hourglass_sum(arr):
 #                      [-1, -3, -1, -2, -4, -5]]))
 
 
-def rotate_left(d, arr):
-    lst = arr[d:] + arr[:d]
-    return lst
+def rotate_left(k, arr):
+    return arr[k:] + arr[:k]
 
 
 # print(rotate_left(4, [1, 2, 3, 4, 5]))
 
+
+def rotate_right(k, lst):
+    k = k % len(lst)    # Accounting for k's greater than size of list
+    return lst[-k:] + lst[:-k]
+
+
+# print(rotate_right(4, [1, 2, 3, 4, 5]))
+
+
 # =======================================================================================================
-    """
+"""
     1. Query 1 x y
         1. Let idx = ((x ^ last_answer) % n)
         2. Append the int y to arr[idx]
-        
+
     2. Query 2 x y
         1. Let idx = ((x ^ last_answer) % n)
         2. Assign the value arr[idx][y % size(arr[idx])] to last_answer

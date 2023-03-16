@@ -6,28 +6,22 @@ using std::cout;
 using std::endl;
 
 
-bool findSumOfThree(std::vector<int> nums, int target) {
+bool findSumOfThree(std::vector<int>& nums, int target) {
     std::sort(nums.begin(), nums.end());
+
     for (int i = 0; i < nums.size(); i++) {
-        int low = i + 1;
-        int high = nums.size() - 1;
+        int low = i + 1, high = nums.size() - 1;
 
         while (low < high) {
             int sum = nums[i] + nums[low] + nums[high];
-
-            if (sum == target) {
+            if (sum == target)
                 return true;
-            }
-            else if (sum > target) {
+            else if (sum > target)
                 high--;
-            }
-            else {
+            else
                 low++;
-            }
-
         }
     }
-
     return false;
 }
 

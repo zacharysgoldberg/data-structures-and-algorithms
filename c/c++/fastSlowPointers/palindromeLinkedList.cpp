@@ -44,6 +44,7 @@ bool palindrome(LinkedListNode* head) {
 
 
 
+
 int main() {
     std::vector<std::vector<int>> inputs = {
     {2, 4, 6, 4, 2},

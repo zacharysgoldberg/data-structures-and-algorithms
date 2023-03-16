@@ -20,6 +20,9 @@ def print_list(head):
 
 def insert_at_tail(head, data):
     node = Node(data)
+    a = 10
+    b = ""
+    c = a + b
     if head is None:
         return node
     elif head.next is None:

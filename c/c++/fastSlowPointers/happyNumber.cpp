@@ -17,7 +17,7 @@ using namespace std;
 */
 
 
-int sumOfDigits(int number) {
+int sum_digits(int number) {
     int sum = 0;
     while (number > 0) {
         // last digit
@@ -26,24 +26,21 @@ int sumOfDigits(int number) {
         number = std::floor(number / 10);
         sum += digit * digit;
     }
-
     return sum;
 }
 
 
-bool isHappyNumber(int num) {
+bool happy_number(int num) {
     int slow = num;
-    int fast = sumOfDigits(num);
+    int fast = sum_digits(num);
 
     while (fast != 1 && fast != slow) {
-        slow = sumOfDigits(slow);
-        fast = sumOfDigits(sumOfDigits(fast));
+        slow = sum_digits(slow);
+        fast = sum_digits(sum_digits(fast));
     }
     if (fast == 1)
         return true;
-
-    else
-        return false;
+    return false;
 }
 
 
@@ -52,7 +49,7 @@ int main() {
     for (int i = 0; i < inputs.size(); i++)
     {
         std::cout << i + 1 << ".\tInput Number: " << inputs[i] << "\n";
-        bool result = isHappyNumber(inputs[i]);
+        bool result = happy_number(inputs[i]);
         std::cout << "\n\tIs it a happy number? ";
         if (result)
             std::cout << "True\n";

@@ -24,7 +24,6 @@ LinkedListNode* getMiddleNode(LinkedListNode* head) {
         slow = slow->next;
         fast = fast->next->next;
     }
-
     return slow;
 }
 

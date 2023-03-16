@@ -20,26 +20,23 @@ STEPS:
 # The fastest-known, comparison-based sorting algorithm
 
 
-def quick_sort(lst, left, right):
-    if left < right:
-        pi = partition(lst, left, right)
-        quick_sort(lst, left, pi - 1)
-        quick_sort(lst, pi + 1, right)
+def quick_sort(lst: list, low: int, high: int) -> None:
+    if low < high:
+        pi = partition(lst, low, high)
+        quick_sort(lst, low, pi - 1)
+        quick_sort(lst, pi + 1, high)
 
 
-def partition(lst, left, right):
-    mid = left + (right - left) // 2
-    lst[right], lst[mid] = lst[mid], lst[right]
+def partition(lst, low, high):
+    pivot = lst[high]
+    i = low - 1
 
-    pivot = lst[right]
-    i = left - 1
-
-    for j in range(left, right):
+    for j in range(low, high):
         if lst[j] <= pivot:
             i += 1
             lst[i], lst[j] = lst[j], lst[i]
 
-    lst[i + 1], lst[right] = lst[right], lst[i + 1]
+    lst[i + 1], lst[high] = lst[high], lst[i + 1]
     return i + 1
 
 
