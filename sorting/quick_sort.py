@@ -20,7 +20,7 @@ STEPS:
 # The fastest-known, comparison-based sorting algorithm
 
 
-def quick_sort(lst: list, low: int, high: int) -> None:
+def quick_sort(lst, low, high):
     if low < high:
         pi = partition(lst, low, high)
         quick_sort(lst, low, pi - 1)
