@@ -22,6 +22,9 @@ STEPS:
 
 def quick_sort(lst, low, high):
     if low < high:
+        # find pivot element such that
+        # element smaller than pivot are on the left
+        # element greater than pivot are on the right
         pi = partition(lst, low, high)
         quick_sort(lst, low, pi - 1)
         quick_sort(lst, pi + 1, high)
@@ -29,13 +32,17 @@ def quick_sort(lst, low, high):
 
 def partition(lst, low, high):
     pivot = lst[high]
+    # pointer for greater element
     i = low - 1
-
+    # traverse through all elements
+    # compare each element with pivot
     for j in range(low, high):
         if lst[j] <= pivot:
+            # if element smaller than pivot is found
+            # swap it with the greater element pointed by i
             i += 1
             lst[i], lst[j] = lst[j], lst[i]
-
+    # swap the pivot element with the greater element specified by i
     lst[i + 1], lst[high] = lst[high], lst[i + 1]
     return i + 1
 

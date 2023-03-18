@@ -48,3 +48,7 @@ if __name__ == '__main__':
     merge_sort(lst)
     print()
     print("Sorted list is: ", lst)
+
+    # arr = ['31415926535897932384626433832795', '1', '3', '10', '3', '5']
+    # print(merge_sort(arr))
+    # print(arr)
