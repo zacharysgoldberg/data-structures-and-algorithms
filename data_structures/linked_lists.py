@@ -22,7 +22,7 @@ class LinkedList:
         else:
             return False
 
-    def length(self):
+    def length(self) -> int:
         counter = 0
         curr = self.get_head()
         while curr:
@@ -49,6 +49,19 @@ class LinkedList:
         curr.next = node
         return
 
+    def insert(self, data):
+        node = Node(data)
+        curr = self.head
+        while curr:
+            if curr.data > data and curr.next.data <= data:
+                next_node = curr.next
+                curr.next = node
+                node.next = next_node
+                return
+            curr = curr.next
+
+        return
+
     def search(self, data) -> bool:
         curr = self.get_head()
         while curr:
@@ -58,7 +71,7 @@ class LinkedList:
 
         return False
 
-    def find_mid(self):
+    def find_mid(self) -> int:
         slow = self.get_head()
         fast = self.get_head()
         if self.length() == 4:
@@ -78,13 +91,12 @@ class LinkedList:
             first_node.next = None
         return
 
-    def delete(self, data):
+    def delete(self, data) -> bool:
         curr = self.get_head()
-        prev = None
+        prev = self.get_head()
         if curr.data == data:
             self.delete_at_head()
             return True
-
         while curr:
             if curr.data == data:
                 prev.next = curr.next
@@ -95,6 +107,19 @@ class LinkedList:
             curr = curr.next
 
         return False
+
+    def remove_duplicates(self):
+        visited = set()
+        curr = self.get_head()
+        prev = self.get_head()
+        while curr:
+            if curr.data in visited:
+                prev.next_element = curr.next_element
+                curr = curr.next_element
+                continue
+            visited.add(curr.data)
+            prev = curr
+            curr = curr.next_element
 
     def __str__(self):
         if self.is_empty():
@@ -170,7 +195,7 @@ class DoublyLinkedList:
 
         curr.next = node
         node.prev = curr
-        return self.head
+        return
 
     def delete(self, data):
         curr = self.get_head()
@@ -242,9 +267,13 @@ lst.delete(4)
 lst.__str__()
 
 print(lst.search(4))
+
+lst.insert(4)
+lst.__str__()
+
 print(lst.search(3))
 
-
+'''
 dblist = DoublyLinkedList()
 for i in range(11):
     dblist.insert_at_head(i)
@@ -263,3 +292,4 @@ dblist.insert_at_tail(0)
 dblist.__str__()
 
 print(dblist.tail.data)
+'''

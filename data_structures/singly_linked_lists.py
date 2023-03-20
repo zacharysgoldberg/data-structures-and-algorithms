@@ -171,16 +171,15 @@ class LinkedList:
     def remove_duplicates3(self, lst):
         visited = set()
         curr = lst.head
-        prev = None
+        prev = lst.head
         while curr:
-            if curr.data not in visited:
-                visited.add(curr.data)
-                prev = curr
-                curr = curr.next_element
-            else:
-                curr.next_element = None
+            if curr.data in visited:
                 prev.next_element = curr.next_element
                 curr = curr.next_element
+                continue
+            visited.add(curr.data)
+            prev = curr
+            curr = curr.next_element
         return lst
 
     def get_node(self, head, n):
@@ -216,30 +215,6 @@ class LinkedList:
             if one == two:
                 return True
         return False
-
-    def find_mid(self, lst):
-        left = lst.head
-        right = lst.head.next_element
-        while right and right.next_element:
-            left = left.next_element
-            right = right.next_element.next_element
-        return left.data
-
-    def intersection(self, list1, list2):
-        res = LinkedList()
-        visited = set()
-        curr1 = list1.head
-        curr2 = list2.head
-        while curr1:
-            if curr1.data not in visited:
-                visited.add(curr1.data)
-            curr1 = curr1.next_element
-
-        while curr2:
-            if curr2.data in visited:
-                res.append(curr2.data)
-            curr2 = curr2.next_element
-        return res
 
 
 def print_linked_list(head):
@@ -281,6 +256,75 @@ def delete_node_at_pos(head, position):
         curr = curr.next
         index += 1
     curr.next = curr.next.next
+
+
+# Merged sorted linked lists
+
+def merge_lists(head1, head2):
+    merged_list = LinkedList()
+    merged = merged_list
+
+    while head1 and head2:
+        if head1.data < head2.data:
+            merged.next = head1
+            head1 = head1.next
+        else:
+            merged.next = head2
+            head2 = head2.next
+        merged = merged.next
+
+    if not head1:
+        merged.next = head2
+    elif not head2:
+        merged.next = head1
+
+    return merged_list.next
+
+
+# Find merge point of two lists
+
+def find_merge_node(head1, head2):
+    slow, fast = head1, head2
+    while slow != fast:
+        slow = slow.next if slow else head2
+        fast = fast.next if fast else head2
+
+    return slow.data
+
+
+def find_mid(lst):
+    left = lst.head
+    right = lst.head.next_element
+    while right and right.next_element:
+        left = left.next_element
+        right = right.next_element.next_element
+    return left.data
+
+
+def union(list1, list2):
+    curr1 = list1.get_head()
+    while curr1.next_element:
+        curr1 = curr1.next_element
+    curr1.next_element = list2.get_head()
+    list1.remove_duplicates3()
+    return list1
+
+
+def intersection(list1, list2):
+    res = LinkedList()
+    visited = set()
+    curr1 = list1.head
+    curr2 = list2.head
+    while curr1:
+        if curr1.data not in visited:
+            visited.add(curr1.data)
+        curr1 = curr1.next_element
+
+    while curr2:
+        if curr2.data in visited:
+            res.append(curr2.data)
+        curr2 = curr2.next_element
+    return res
 
 
 if __name__ == '__main__':
