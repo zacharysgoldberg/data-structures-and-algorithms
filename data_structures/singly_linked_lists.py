@@ -182,38 +182,25 @@ class LinkedList:
             curr = curr.next_element
         return lst
 
-    def get_node(self, head, n):
-        nodes = []
-        length = 0
-        curr = head.head_node
-        while curr:
-            nodes.append(curr.data)
-            curr = curr.next_element
-            length += 1
-        position = length - n + 1
-        if not nodes or position < 0 or position > length:
+    def get_node(self, n):
+        curr = self.get_head()
+        length = self.length()
+        if n > length:
             return -1
-        return nodes[position - 1]
+        n = length - n
+        for _ in range(0, n):
+            curr = curr.next_element
+        return curr.data
 
-    def has_cycle(self, head):
-        visited = set()
-        curr = head
-        while curr:
-            if curr in visited:
-                return 1
-            else:
-                visited.add(curr)
-                curr = curr.nexts
-        return 0
-
-    def detect_loop(self, lst):
-        one = lst.head
-        two = lst.head
-        while one and two and two.next_element:
-            one = one.next_element
-            two = one.next_element.next_element
-            if one == two:
+    # Detect loop
+    def has_cycle(self):
+        slow, fast = self.head, self.head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
                 return True
+
         return False
 
 
