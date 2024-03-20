@@ -1,6 +1,7 @@
 from time import time
 from collections import Counter
 import string
+from typing import List
 from data_structures import queues
 
 
@@ -93,3 +94,11 @@ def find_max_sum_sublist(lst):
 
 
 # print(find_max_sum_sublist([-4, 2, -5, 1, 2, 3, 6, -5, 1]))
+
+
+def merge(n):
+    if n <= 0:
+        return
+    while n > 0:
+        print(n)
+        n - 1
